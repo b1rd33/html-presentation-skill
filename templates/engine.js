@@ -248,6 +248,127 @@ TEMPLATES.team = (s) => {
   </div>`;
 };
 
+// --- Extended templates (Priority 2) ---
+
+TEMPLATES['numbered-list'] = (s) => {
+  const items = (s.items || []).map((item, i) =>
+    `<div class="list-item">
+      <span class="list-number">${pad(i + 1)}</span>
+      <span class="list-text">${esc(item)}</span>
+    </div>`
+  ).join('');
+  return `<div class="numbered-list-content">${items}</div>`;
+};
+
+// competitors[] (strings), features[] ({ name, values[] (booleans) }), winnerCol (0-indexed)
+TEMPLATES['feature-matrix'] = (s) => {
+  const competitors = s.competitors || [];
+  const features = s.features || [];
+  const headers = ['', ...competitors].map((h, i) =>
+    `<th class="matrix-header"${s.winnerCol === (i - 1) ? ' data-winner="true"' : ''}>${esc(h)}</th>`
+  ).join('');
+  const rows = features.map(f => {
+    const cells = f.values.map((v, i) =>
+      `<td class="matrix-cell"${s.winnerCol === i ? ' data-winner="true"' : ''}>${v ? '<span class="matrix-check">✓</span>' : '<span class="matrix-cross">✗</span>'}</td>`
+    ).join('');
+    return `<tr class="matrix-row"><td class="matrix-feature">${esc(f.name)}</td>${cells}</tr>`;
+  }).join('');
+  return `<div class="feature-matrix-container">
+    <table class="feature-matrix">
+      <thead><tr>${headers}</tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+  </div>`;
+};
+
+// xAxis, yAxis (strings), quadrants[] ({ label, items[], position ('top-left'|'top-right'|'bottom-left'|'bottom-right') })
+TEMPLATES['matrix-2x2'] = (s) => {
+  const quadrants = (s.quadrants || []).map(q => {
+    const items = (q.items || []).map(item => `<li class="quadrant-item">${esc(item)}</li>`).join('');
+    return `<div class="quadrant" data-position="${esc(q.position || 'top-left')}">
+      <h3 class="quadrant-label">${esc(q.label)}</h3>
+      <ul class="quadrant-items">${items}</ul>
+    </div>`;
+  }).join('');
+  return `<div class="matrix-2x2-container">
+    <div class="matrix-y-axis">${esc(s.yAxis || '')}</div>
+    <div class="matrix-grid">${quadrants}</div>
+    <div class="matrix-x-axis">${esc(s.xAxis || '')}</div>
+  </div>`;
+};
+
+// columns[] ({ header, items[], color? })
+TEMPLATES['three-columns'] = (s) => {
+  const cols = (s.columns || []).map(col => {
+    const items = (col.items || []).map(item => `<li class="column-item">${esc(item)}</li>`).join('');
+    return `<div class="column-panel" ${col.color ? `data-color="${esc(col.color)}"` : ''}>
+      <h3 class="column-header">${esc(col.header || '')}</h3>
+      <ul class="column-items">${items}</ul>
+    </div>`;
+  }).join('');
+  return `<div class="columns-grid">${cols}</div>`;
+};
+
+// steps[] ({ label, desc })
+TEMPLATES.process = (s) => {
+  const steps = (s.steps || []).map((step, i) =>
+    `<div class="process-step">
+      <div class="process-number">${pad(i + 1)}</div>
+      <div class="process-content">
+        <h3 class="process-label">${esc(step.label)}</h3>
+        <p class="process-desc">${esc(step.desc || '')}</p>
+      </div>
+      ${i < (s.steps || []).length - 1 ? '<div class="process-arrow">\u2192</div>' : ''}
+    </div>`
+  ).join('');
+  return `<div class="process-track">${steps}</div>`;
+};
+
+// risks[] ({ risk, severity, likelihood, mitigation }) severity/likelihood: 'low'|'medium'|'high'
+TEMPLATES['risk-table'] = (s) => {
+  const rows = (s.risks || []).map(r =>
+    `<tr class="risk-row">
+      <td class="risk-name">${esc(r.risk)}</td>
+      <td class="risk-severity" data-level="${esc(r.severity || 'medium')}">${esc(r.severity || '')}</td>
+      <td class="risk-likelihood" data-level="${esc(r.likelihood || 'medium')}">${esc(r.likelihood || '')}</td>
+      <td class="risk-mitigation">${esc(r.mitigation || '')}</td>
+    </tr>`
+  ).join('');
+  return `<div class="risk-table-container">
+    <table class="risk-table">
+      <thead><tr>
+        <th class="risk-header">Risk</th>
+        <th class="risk-header">Severity</th>
+        <th class="risk-header">Likelihood</th>
+        <th class="risk-header">Mitigation</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+  </div>`;
+};
+
+// verdict { label, color }, pros[], cons[]
+TEMPLATES.assessment = (s) => {
+  const verdict = s.verdict || {};
+  const pros = (s.pros || []).map(p => `<li class="assessment-pro">${esc(p)}</li>`).join('');
+  const cons = (s.cons || []).map(c => `<li class="assessment-con">${esc(c)}</li>`).join('');
+  return `<div class="assessment-content">
+    <div class="assessment-verdict" ${verdict.color ? `data-color="${esc(verdict.color)}"` : ''}>
+      <span class="verdict-label">${esc(verdict.label || '')}</span>
+    </div>
+    <div class="assessment-details">
+      <div class="assessment-pros">
+        <h3 class="assessment-heading">Strengths</h3>
+        <ul class="assessment-list">${pros}</ul>
+      </div>
+      <div class="assessment-cons">
+        <h3 class="assessment-heading">Weaknesses</h3>
+        <ul class="assessment-list">${cons}</ul>
+      </div>
+    </div>
+  </div>`;
+};
+
 function renderSlide(slide, index, total) {
   const type = slide.type || 'unknown';
   const templateFn = TEMPLATES[type];
