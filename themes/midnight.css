@@ -1,9 +1,9 @@
 /* @contract-version 1.0-dev */
 
 /* ═══════════════════════════════════════════════════════════════
-   MIDNIGHT — Default dark theme
-   Pentagon briefing meets Bloomberg terminal.
-   Gold accents on deep navy. Bold, confident, premium.
+   MIDNIGHT — Presentation-grade dark theme
+   Pitch.com meets Keynote. Gold accents on deep navy.
+   Designed for $50M Series A pitch decks.
    ═══════════════════════════════════════════════════════════════ */
 
 /* ── 1. Google Fonts ──────────────────────────────────────────── */
@@ -14,9 +14,9 @@
   /* Slide dimensions */
   --slide-w: 960px;
   --slide-h: 540px;
-  --slide-padding-x: 56px;
-  --slide-padding-y: 40px;
-  --card-radius: 8px;
+  --slide-padding-x: 64px;
+  --slide-padding-y: 48px;
+  --card-radius: 12px;
   --card-gap: 24px;
 
   /* Palette */
@@ -40,28 +40,29 @@
   --font-body: 'Inter', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 
-  --heading-size: 28px;
-  --heading-weight: 700;
-  --heading-line-height: 1.15;
-  --heading-transform: uppercase;
-  --heading-tracking: 0.08em;
+  --heading-size: 52px;
+  --heading-weight: 600;
+  --heading-line-height: 1.05;
+  --heading-transform: none;
+  --heading-tracking: -0.02em;
 
+  --body-size: 20px;
   --body-weight: 400;
-  --body-leading: 1.6;
+  --body-leading: 1.5;
   --body-tracking: 0.01em;
   --label-transform: uppercase;
 
-  /* Cards */
-  --card-border-width: 3px;
-  --card-border-style: solid;
-  --card-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
-  --card-bg: var(--surface);
+  /* Cards — layered glass surfaces */
+  --card-border-width: 0;
+  --card-border-style: none;
+  --card-shadow: 0 16px 40px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --card-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
 
-  /* Accent bar */
-  --accent-bar-height: 3px;
+  /* Accent bar — disabled by default, per-slide overrides */
+  --accent-bar-height: 0;
   --accent-bar-position: top;
 
-  /* Slide background texture — diagonal gradient */
+  /* Slide background texture */
   --slide-bg-texture: linear-gradient(135deg, rgba(26, 35, 64, 0.6) 0%, transparent 40%, rgba(36, 48, 96, 0.4) 100%);
 
   /* Code */
@@ -70,12 +71,12 @@
 }
 
 /* ── 3. data-color mappings ───────────────────────────────────── */
-[data-color="primary"]   { --item-color: var(--primary);       --item-color-subtle: color-mix(in srgb, var(--primary) 15%, transparent); }
-[data-color="secondary"] { --item-color: var(--secondary);     --item-color-subtle: color-mix(in srgb, var(--secondary) 15%, transparent); }
-[data-color="success"]   { --item-color: var(--color-success); --item-color-subtle: color-mix(in srgb, var(--color-success) 15%, transparent); }
-[data-color="info"]      { --item-color: var(--color-info);    --item-color-subtle: color-mix(in srgb, var(--color-info) 15%, transparent); }
-[data-color="warning"]   { --item-color: var(--color-warning); --item-color-subtle: color-mix(in srgb, var(--color-warning) 15%, transparent); }
-[data-color="danger"]    { --item-color: var(--color-danger);  --item-color-subtle: color-mix(in srgb, var(--color-danger) 15%, transparent); }
+[data-color="primary"]   { --item-color: var(--primary);       --item-color-subtle: color-mix(in srgb, var(--primary) 8%, transparent); }
+[data-color="secondary"] { --item-color: var(--secondary);     --item-color-subtle: color-mix(in srgb, var(--secondary) 8%, transparent); }
+[data-color="success"]   { --item-color: var(--color-success); --item-color-subtle: color-mix(in srgb, var(--color-success) 8%, transparent); }
+[data-color="info"]      { --item-color: var(--color-info);    --item-color-subtle: color-mix(in srgb, var(--color-info) 8%, transparent); }
+[data-color="warning"]   { --item-color: var(--color-warning); --item-color-subtle: color-mix(in srgb, var(--color-warning) 8%, transparent); }
+[data-color="danger"]    { --item-color: var(--color-danger);  --item-color-subtle: color-mix(in srgb, var(--color-danger) 8%, transparent); }
 
 /* ── 4. Base Layout ───────────────────────────────────────────── */
 html, body {
@@ -86,6 +87,7 @@ html, body {
   overflow: hidden;
   background: var(--bg);
   font-family: var(--font-body);
+  font-size: var(--body-size);
   font-weight: var(--body-weight);
   line-height: var(--body-leading);
   letter-spacing: var(--body-tracking);
@@ -110,6 +112,26 @@ html, body {
   box-sizing: border-box;
 }
 
+/* Atmospheric depth layer — radial glow */
+.slide::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 18% 20%, rgba(212, 168, 67, 0.08), transparent 40%),
+    radial-gradient(ellipse at 85% 80%, rgba(96, 165, 250, 0.06), transparent 35%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* All slide content above the atmospheric layer */
+.slide-header,
+.slide-body,
+.slide-footer {
+  position: relative;
+  z-index: 1;
+}
+
 .slide.active {
   display: flex;
 }
@@ -117,7 +139,7 @@ html, body {
 /* Slide regions */
 .slide-header {
   flex-shrink: 0;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
 /* Title & closing slides: center header content */
@@ -133,18 +155,36 @@ html, body {
 }
 
 .slide[data-type="title"] .slide-title {
-  font-size: 3.5rem;
-  letter-spacing: 0.15em;
+  font-size: 72px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 0.95;
 }
 
 .slide[data-type="title"] .slide-subtitle {
-  font-size: 1.2rem;
-  margin-top: 0.5rem;
+  font-size: 18px;
+  margin-top: 12px;
+  opacity: 0.7;
+}
+
+.slide[data-type="title"] .slide-pre-title {
+  display: none;
+}
+
+.slide[data-type="title"] .slide-footer,
+.slide[data-type="closing"] .slide-footer {
+  opacity: 0.25;
 }
 
 .slide[data-type="closing"] .slide-title {
-  font-size: 3rem;
-  letter-spacing: 0.12em;
+  font-size: 56px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.slide[data-type="closing"] .slide-pre-title {
+  display: none;
 }
 
 /* Section slides: center header content */
@@ -159,8 +199,22 @@ html, body {
 }
 
 .slide[data-type="section"] .slide-title {
-  font-size: 3rem;
-  letter-spacing: 0.12em;
+  font-size: 64px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1.0;
+  margin-bottom: 20px;
+}
+
+/* Gold accent line between title and pills on section slides */
+.slide[data-type="section"] .slide-title::after {
+  content: "";
+  display: block;
+  width: 40px;
+  height: 2px;
+  background: var(--primary);
+  margin: 16px auto 0;
 }
 
 .slide-body {
@@ -172,26 +226,40 @@ html, body {
   overflow: hidden;
 }
 
+/* Footer — very subtle, absolute bottom */
 .slide-footer {
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 8px;
-  border-top: 1px solid var(--border);
+  padding-top: 10px;
   margin-top: auto;
-  opacity: 0.5;
+  opacity: 0.4;
+  font-size: 11px;
+  position: relative;
+}
+
+/* Thin gold accent line above footer */
+.slide-footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+  opacity: 0.3;
 }
 
 /* Header typography */
 .slide-pre-title {
   font-family: var(--font-heading);
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 600;
-  text-transform: var(--heading-transform);
-  letter-spacing: var(--heading-tracking);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
   color: var(--primary);
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
 .slide-title {
@@ -207,10 +275,10 @@ html, body {
 
 .slide-subtitle {
   font-family: var(--font-body);
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 400;
   color: var(--text-dim);
-  margin-top: 6px;
+  margin-top: 8px;
 }
 
 /* Footer elements */
@@ -225,13 +293,13 @@ html, body {
   font-size: 11px;
   font-weight: 600;
   text-transform: var(--label-transform);
-  letter-spacing: var(--heading-tracking);
+  letter-spacing: 0.06em;
   color: var(--text-dim);
 }
 
 .slide-logo {
-  height: 20px;
-  opacity: 0.6;
+  height: 18px;
+  opacity: 0.5;
 }
 
 /* ── 5. Template Component Styles ─────────────────────────────── */
@@ -244,24 +312,28 @@ html, body {
   justify-content: center;
   text-align: center;
   flex: 1;
-  gap: 16px;
+  gap: 20px;
 }
 
 .title-content .slide-title {
-  font-size: 40px;
-  line-height: 1.1;
+  font-size: 72px;
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
 .title-logo {
   height: 48px;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 }
 
 .title-tagline {
   font-family: var(--font-body);
-  font-size: 16px;
+  font-size: 18px;
   color: var(--text-dim);
   max-width: 600px;
+  line-height: 1.5;
 }
 
 /* --- SECTION slide --- */
@@ -272,12 +344,28 @@ html, body {
   justify-content: center;
   text-align: center;
   flex: 1;
-  gap: 20px;
+  gap: 24px;
+  position: relative;
+  z-index: 1;
 }
 
 .section-content .slide-title {
-  font-size: 36px;
-  color: var(--primary);
+  font-size: 64px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1.0;
+}
+
+/* Gold accent line after section title */
+.section-content .slide-title::after {
+  content: "";
+  display: block;
+  width: 40px;
+  height: 2px;
+  background: var(--primary);
+  margin: 16px auto 0;
 }
 
 .section-pills {
@@ -292,12 +380,12 @@ html, body {
   font-size: 11px;
   font-weight: 600;
   text-transform: var(--label-transform);
-  letter-spacing: var(--heading-tracking);
+  letter-spacing: 0.06em;
   padding: 6px 16px;
   border-radius: 100px;
-  background: var(--surface);
+  background: rgba(255, 255, 255, 0.04);
   color: var(--text-dim);
-  border: 1px solid var(--border);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 /* --- CLOSING slide --- */
@@ -308,28 +396,31 @@ html, body {
   justify-content: center;
   text-align: center;
   flex: 1;
-  gap: 16px;
+  gap: 20px;
 }
 
 .closing-content .slide-title {
-  font-size: 36px;
+  font-size: 56px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
 .closing-logo {
   height: 48px;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
 }
 
 .closing-tagline {
-  font-size: 16px;
+  font-size: 18px;
   color: var(--text-dim);
+  line-height: 1.5;
 }
 
 .closing-website {
   font-family: var(--font-mono);
-  font-size: 14px;
+  font-size: 15px;
   color: var(--primary);
-  margin-top: 4px;
+  margin-top: 8px;
 }
 
 /* --- TEXT slide --- */
@@ -338,6 +429,7 @@ html, body {
   flex-direction: column;
   flex: 1;
   gap: 16px;
+  margin-top: 8px;
 }
 
 .text-body {
@@ -346,10 +438,15 @@ html, body {
 }
 
 .text-paragraph {
-  font-size: 16px;
+  font-size: 20px;
   line-height: var(--body-leading);
   color: var(--text);
-  margin: 0 0 12px 0;
+  margin: 0 0 16px 0;
+}
+
+.text-body p {
+  font-size: 20px;
+  line-height: var(--body-leading);
 }
 
 .text-list {
@@ -358,14 +455,14 @@ html, body {
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 .text-list-item {
-  font-size: 16px;
+  font-size: 20px;
   line-height: 1.5;
   color: var(--text);
-  padding-left: 20px;
+  padding-left: 24px;
   position: relative;
 }
 
@@ -373,9 +470,9 @@ html, body {
   content: '';
   position: absolute;
   left: 0;
-  top: 8px;
-  width: 6px;
-  height: 6px;
+  top: 10px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   background: var(--primary);
 }
@@ -388,42 +485,55 @@ html, body {
   justify-content: center;
   text-align: center;
   flex: 1;
-  gap: 20px;
-  padding: 0 40px;
+  gap: 24px;
+  padding: 0 48px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Large decorative gold quotation mark */
+.quote-content::before {
+  content: '\201C';
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 80px;
+  color: var(--primary);
+  opacity: 0.3;
+  line-height: 1;
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .quote-text {
   font-family: var(--font-heading);
-  font-size: 22px;
-  font-weight: 500;
+  font-size: 28px;
+  font-weight: 400;
+  font-style: italic;
   line-height: 1.5;
   color: var(--text);
   position: relative;
+  max-width: 720px;
+  margin-top: 40px;
 }
 
 .quote-text::before {
-  content: '\201C';
-  font-size: 48px;
-  color: var(--primary);
-  position: absolute;
-  top: -24px;
-  left: -24px;
-  line-height: 1;
+  display: none;
 }
 
 .quote-attribution {
   font-family: var(--font-heading);
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
   color: var(--primary);
   text-transform: var(--label-transform);
-  letter-spacing: var(--heading-tracking);
+  letter-spacing: 0.06em;
 }
 
 .quote-role {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-dim);
-  margin-top: 2px;
+  margin-top: 4px;
 }
 
 /* --- IMAGE-TEXT slide --- */
@@ -453,7 +563,7 @@ html, body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 12px;
+  gap: 14px;
 }
 
 /* --- NUMBERS slide --- */
@@ -466,36 +576,37 @@ html, body {
 }
 
 .number-item {
-  background: var(--card-bg);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
   border-radius: var(--card-radius);
-  padding: 24px 20px;
+  padding: 28px 24px;
   text-align: center;
   box-shadow: var(--card-shadow);
-  border-top: var(--card-border-width) var(--card-border-style) var(--item-color, var(--primary));
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .number-value {
   font-family: var(--font-heading);
-  font-size: 2.5rem;
-  font-weight: var(--heading-weight);
-  color: var(--item-color, var(--primary));
-  line-height: 1.1;
+  font-size: 80px;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 0.95;
 }
 
 .number-label {
   font-family: var(--font-heading);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   text-transform: var(--label-transform);
-  letter-spacing: var(--heading-tracking);
+  letter-spacing: 0.06em;
   color: var(--text);
-  margin-top: 8px;
+  margin-top: 12px;
 }
 
 .number-desc {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-dim);
-  margin-top: 4px;
+  margin-top: 6px;
+  line-height: 1.4;
 }
 
 /* --- METRICS slide --- */
@@ -508,35 +619,35 @@ html, body {
 }
 
 .metric-card {
-  background: var(--card-bg);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
   border-radius: var(--card-radius);
-  padding: 24px 20px;
+  padding: 28px 24px;
   box-shadow: var(--card-shadow);
-  border-top: var(--card-border-width) var(--card-border-style) var(--item-color, var(--primary));
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .metric-value {
   font-family: var(--font-heading);
-  font-size: 2.5rem;
-  font-weight: var(--heading-weight);
-  color: var(--item-color, var(--primary));
-  line-height: 1.1;
+  font-size: 72px;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 0.95;
 }
 
 .metric-label {
   font-family: var(--font-heading);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   text-transform: var(--label-transform);
-  letter-spacing: var(--heading-tracking);
+  letter-spacing: 0.06em;
   color: var(--text);
-  margin-top: 8px;
+  margin-top: 12px;
 }
 
 .metric-desc {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-dim);
-  margin-top: 4px;
+  margin-top: 6px;
   line-height: 1.4;
 }
 
@@ -545,8 +656,9 @@ html, body {
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  gap: 12px;
-  height: 280px;
+  gap: 14px;
+  min-height: 300px;
+  height: 320px;
   padding: 20px 0;
 }
 
@@ -560,8 +672,8 @@ html, body {
 
 .chart-bar {
   width: 100%;
-  max-width: 56px;
-  border-radius: 4px 4px 0 0;
+  max-width: 60px;
+  border-radius: 6px 6px 0 0;
   background: var(--item-color, var(--primary));
   transition: height 0.6s cubic-bezier(0.22, 1, 0.36, 1);
   min-height: 4px;
@@ -569,25 +681,25 @@ html, body {
 
 .chart-value {
   font-family: var(--font-heading);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   color: var(--text);
 }
 
 .chart-label {
-  font-size: 10px;
-  font-weight: 600;
-  text-transform: var(--label-transform);
-  letter-spacing: var(--heading-tracking);
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
   color: var(--text-dim);
   text-align: center;
 }
 
 .chart-annotation {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--text-dim);
   text-align: center;
-  padding-top: 8px;
+  padding-top: 10px;
   border-top: 1px solid var(--border);
   margin-top: auto;
 }
@@ -595,40 +707,66 @@ html, body {
 /* --- COMPARISON slide --- */
 .comparison-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: var(--card-gap);
+  grid-template-columns: 1fr auto 1fr;
+  gap: 16px;
   flex: 1;
-  align-content: start;
+  align-content: center;
+  align-items: stretch;
+}
+
+/* When only 2 sides exist (no VS badge in markup), fall back to 2-col */
+.comparison-grid:not(:has(.comparison-vs)) {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }
 
 .comparison-side {
-  background: var(--card-bg);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
   border-radius: var(--card-radius);
-  padding: 24px 20px;
+  padding: 28px 24px;
   box-shadow: var(--card-shadow);
-  border-top: var(--card-border-width) var(--card-border-style) var(--item-color, var(--primary));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* VS badge — dramatic circle */
+.comparison-vs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid var(--primary);
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--primary);
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
 .comparison-title {
   font-family: var(--font-heading);
-  font-size: 14px;
-  font-weight: var(--heading-weight);
-  text-transform: var(--heading-transform);
-  letter-spacing: var(--heading-tracking);
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: -0.01em;
   color: var(--item-color, var(--primary));
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 
 .comparison-items {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
 .comparison-item {
-  font-size: 13px;
+  font-size: 15px;
   color: var(--text);
-  padding-left: 16px;
+  padding-left: 18px;
   position: relative;
   line-height: 1.5;
 }
@@ -637,9 +775,9 @@ html, body {
   content: '';
   position: absolute;
   left: 0;
-  top: 7px;
-  width: 5px;
-  height: 5px;
+  top: 8px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   background: var(--item-color, var(--primary));
 }
@@ -647,15 +785,15 @@ html, body {
 .comparison-badge {
   display: inline-block;
   font-family: var(--font-heading);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 600;
   text-transform: var(--label-transform);
-  letter-spacing: var(--heading-tracking);
-  padding: 3px 10px;
+  letter-spacing: 0.06em;
+  padding: 4px 12px;
   border-radius: 100px;
-  background: var(--item-color-subtle, color-mix(in srgb, var(--primary) 15%, transparent));
+  background: var(--item-color-subtle, color-mix(in srgb, var(--primary) 8%, transparent));
   color: var(--item-color, var(--primary));
-  margin-top: 12px;
+  margin-top: 14px;
 }
 
 /* --- TABLE slide --- */
@@ -663,30 +801,35 @@ html, body {
   flex: 1;
   overflow: hidden;
   border-radius: var(--card-radius);
-  background: var(--card-bg);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
   box-shadow: var(--card-shadow);
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .data-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 13px;
+  font-size: 15px;
 }
 
 .table-header {
   display: flex;
   background: var(--surface-raised);
   font-family: var(--font-heading);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   text-transform: var(--label-transform);
-  letter-spacing: var(--heading-tracking);
+  letter-spacing: 0.06em;
   color: var(--text-dim);
 }
 
 .table-row {
   display: flex;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.table-row:nth-child(even) {
+  background: rgba(255, 255, 255, 0.015);
 }
 
 .table-row:last-child {
@@ -695,17 +838,18 @@ html, body {
 
 .table-cell {
   flex: 1;
-  padding: 10px 16px;
+  padding: 12px 16px;
   color: var(--text);
+  font-size: 15px;
 }
 
 .table-header .table-cell {
-  padding: 10px 16px;
+  padding: 12px 16px;
   color: var(--text-dim);
 }
 
 [data-highlight] {
-  background: color-mix(in srgb, var(--primary) 10%, transparent);
+  background: color-mix(in srgb, var(--primary) 8%, transparent);
 }
 
 /* --- TIMELINE slide --- */
@@ -714,28 +858,51 @@ html, body {
   gap: 0;
   flex: 1;
   align-items: stretch;
+  position: relative;
+}
+
+/* Horizontal connecting line */
+.timeline-track::before {
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: 20px;
+  right: 20px;
+  height: 2px;
+  background: var(--border);
+  z-index: 0;
 }
 
 .timeline-phase {
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: 16px;
+  padding: 0 16px 16px;
   position: relative;
-  border-left: 2px solid var(--border);
+  border-left: none;
+  z-index: 1;
 }
 
 .timeline-phase:first-child {
   border-left: none;
 }
 
+/* Active / highlighted phase */
+.timeline-phase[data-active] {
+  background: rgba(212, 168, 67, 0.06);
+  border-radius: var(--card-radius);
+}
+
 .timeline-marker {
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   background: var(--item-color, var(--primary));
-  margin-bottom: 12px;
+  margin-bottom: 14px;
   flex-shrink: 0;
+  box-shadow: 0 0 0 4px var(--bg);
+  position: relative;
+  z-index: 2;
 }
 
 .timeline-content {
@@ -744,10 +911,10 @@ html, body {
 
 .timeline-title {
   font-family: var(--font-heading);
-  font-size: 13px;
-  font-weight: var(--heading-weight);
-  text-transform: var(--heading-transform);
-  letter-spacing: var(--heading-tracking);
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: -0.01em;
   color: var(--item-color, var(--primary));
   margin-bottom: 8px;
 }
@@ -756,7 +923,7 @@ html, body {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-dim);
   line-height: 1.5;
 }
@@ -776,35 +943,36 @@ html, body {
 }
 
 .team-member {
-  background: var(--card-bg);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
   border-radius: var(--card-radius);
-  padding: 20px 16px;
+  padding: 24px 16px;
   text-align: center;
   box-shadow: var(--card-shadow);
-  border-top: var(--card-border-width) var(--card-border-style) var(--item-color, var(--primary));
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .member-name {
   font-family: var(--font-heading);
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
   color: var(--text);
-  margin-bottom: 2px;
+  margin-bottom: 4px;
 }
 
 .member-role {
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: var(--label-transform);
-  letter-spacing: var(--heading-tracking);
-  color: var(--primary);
-  margin-bottom: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--text-dim);
+  margin-bottom: 8px;
 }
 
 .member-detail {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--text-dim);
   line-height: 1.4;
+  opacity: 0.7;
 }
 
 .team-investors {
@@ -820,7 +988,7 @@ html, body {
   font-weight: 600;
   color: var(--text-dim);
   padding: 6px 14px;
-  background: var(--surface);
+  background: rgba(255, 255, 255, 0.03);
   border-radius: 100px;
   border: 1px solid var(--border);
 }
@@ -829,7 +997,7 @@ html, body {
 .numbered-list-content {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   flex: 1;
 }
 
@@ -837,24 +1005,25 @@ html, body {
   display: flex;
   align-items: baseline;
   gap: 16px;
-  padding: 10px 16px;
-  background: var(--surface);
+  padding: 14px 20px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
   border-radius: var(--card-radius);
-  border-left: 3px solid var(--primary);
-  box-shadow: var(--card-shadow);
+  border-left: none;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
 
 .list-number {
   font-family: var(--font-heading);
-  font-size: 18px;
-  font-weight: var(--heading-weight);
+  font-size: 22px;
+  font-weight: 700;
   color: var(--primary);
-  min-width: 28px;
+  min-width: 32px;
   text-align: center;
 }
 
 .list-text {
-  font-size: 14px;
+  font-size: 16px;
   color: var(--text);
   line-height: 1.5;
 }
@@ -864,24 +1033,25 @@ html, body {
   flex: 1;
   overflow: hidden;
   border-radius: var(--card-radius);
-  background: var(--surface);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
   box-shadow: var(--card-shadow);
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .feature-matrix {
   width: 100%;
   border-collapse: collapse;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .matrix-header {
   font-family: var(--font-heading);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   text-transform: var(--label-transform);
-  letter-spacing: var(--heading-tracking);
+  letter-spacing: 0.06em;
   color: var(--text-dim);
-  padding: 10px 16px;
+  padding: 12px 16px;
   background: var(--surface-raised);
   text-align: center;
 }
@@ -892,11 +1062,11 @@ html, body {
 
 .matrix-header[data-winner] {
   color: var(--primary);
-  background: color-mix(in srgb, var(--primary) 10%, var(--surface-raised));
+  background: color-mix(in srgb, var(--primary) 8%, var(--surface-raised));
 }
 
 .matrix-row {
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
 }
 
 .matrix-row:last-child {
@@ -904,32 +1074,32 @@ html, body {
 }
 
 .matrix-feature {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   color: var(--text);
-  padding: 10px 16px;
+  padding: 12px 16px;
   text-align: left;
 }
 
 .matrix-cell {
   text-align: center;
-  padding: 10px 16px;
+  padding: 12px 16px;
 }
 
 .matrix-cell[data-winner] {
-  background: color-mix(in srgb, var(--primary) 8%, transparent);
+  background: color-mix(in srgb, var(--primary) 6%, transparent);
 }
 
 .matrix-check {
   color: var(--color-success);
   font-weight: 700;
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .matrix-cross {
   color: var(--text-dim);
-  font-size: 16px;
-  opacity: 0.5;
+  font-size: 18px;
+  opacity: 0.4;
 }
 
 /* --- MATRIX-2x2 slide --- */
@@ -946,10 +1116,10 @@ html, body {
   writing-mode: vertical-lr;
   transform: rotate(180deg);
   font-family: var(--font-heading);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 600;
   text-transform: var(--label-transform);
-  letter-spacing: var(--heading-tracking);
+  letter-spacing: 0.06em;
   color: var(--text-dim);
   display: flex;
   align-items: center;
@@ -964,11 +1134,11 @@ html, body {
 }
 
 .quadrant {
-  background: var(--surface);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
   border-radius: var(--card-radius);
-  padding: 16px;
-  box-shadow: var(--card-shadow);
-  border: 1px solid var(--border);
+  padding: 18px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .quadrant[data-position="top-left"] { grid-column: 1; grid-row: 1; }
@@ -978,12 +1148,12 @@ html, body {
 
 .quadrant-label {
   font-family: var(--font-heading);
-  font-size: 12px;
-  font-weight: var(--heading-weight);
-  text-transform: var(--heading-transform);
-  letter-spacing: var(--heading-tracking);
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: -0.01em;
   color: var(--primary);
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .quadrant-items {
@@ -996,7 +1166,7 @@ html, body {
 }
 
 .quadrant-item {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--text-dim);
   line-height: 1.4;
 }
@@ -1004,10 +1174,10 @@ html, body {
 .matrix-x-axis {
   grid-column: 2;
   font-family: var(--font-heading);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 600;
   text-transform: var(--label-transform);
-  letter-spacing: var(--heading-tracking);
+  letter-spacing: 0.06em;
   color: var(--text-dim);
   text-align: center;
 }
@@ -1018,25 +1188,25 @@ html, body {
   grid-template-columns: repeat(3, 1fr);
   gap: var(--card-gap);
   flex: 1;
-  align-content: start;
+  align-content: center;
 }
 
 .column-panel {
-  background: var(--card-bg);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
   border-radius: var(--card-radius);
-  padding: 20px 16px;
+  padding: 24px 20px;
   box-shadow: var(--card-shadow);
-  border-top: var(--card-border-width) var(--card-border-style) var(--item-color, var(--primary));
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .column-header {
   font-family: var(--font-heading);
-  font-size: 13px;
-  font-weight: var(--heading-weight);
-  text-transform: var(--heading-transform);
-  letter-spacing: var(--heading-tracking);
+  font-size: 15px;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: -0.01em;
   color: var(--item-color, var(--primary));
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 .column-items {
@@ -1045,14 +1215,14 @@ html, body {
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
 
 .column-item {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--text);
   line-height: 1.5;
-  padding-left: 14px;
+  padding-left: 16px;
   position: relative;
 }
 
@@ -1060,7 +1230,7 @@ html, body {
   content: '';
   position: absolute;
   left: 0;
-  top: 6px;
+  top: 7px;
   width: 5px;
   height: 5px;
   border-radius: 50%;
@@ -1081,22 +1251,23 @@ html, body {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .process-number {
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   background: var(--primary);
   color: var(--bg);
   font-family: var(--font-heading);
-  font-size: 14px;
-  font-weight: var(--heading-weight);
+  font-size: 16px;
+  font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  box-shadow: 0 4px 16px rgba(212, 168, 67, 0.3);
 }
 
 .process-content {
@@ -1105,16 +1276,16 @@ html, body {
 
 .process-label {
   font-family: var(--font-heading);
-  font-size: 12px;
-  font-weight: var(--heading-weight);
-  text-transform: var(--heading-transform);
-  letter-spacing: var(--heading-tracking);
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: -0.01em;
   color: var(--text);
   margin-bottom: 4px;
 }
 
 .process-desc {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--text-dim);
   line-height: 1.4;
 }
@@ -1123,6 +1294,7 @@ html, body {
   font-size: 20px;
   color: var(--primary);
   flex-shrink: 0;
+  opacity: 0.5;
 }
 
 /* --- RISK-TABLE slide --- */
@@ -1130,30 +1302,31 @@ html, body {
   flex: 1;
   overflow: hidden;
   border-radius: var(--card-radius);
-  background: var(--surface);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
   box-shadow: var(--card-shadow);
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .risk-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .risk-header {
   font-family: var(--font-heading);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   text-transform: var(--label-transform);
-  letter-spacing: var(--heading-tracking);
+  letter-spacing: 0.06em;
   color: var(--text-dim);
-  padding: 10px 16px;
+  padding: 12px 16px;
   background: var(--surface-raised);
   text-align: left;
 }
 
 .risk-row {
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
 }
 
 .risk-row:last-child {
@@ -1161,41 +1334,41 @@ html, body {
 }
 
 .risk-name {
-  padding: 10px 16px;
+  padding: 12px 16px;
   color: var(--text);
   font-weight: 500;
 }
 
 .risk-severity,
 .risk-likelihood {
-  padding: 10px 16px;
+  padding: 12px 16px;
   font-family: var(--font-heading);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   text-transform: var(--label-transform);
-  letter-spacing: var(--heading-tracking);
+  letter-spacing: 0.06em;
   text-align: center;
 }
 
 [data-level="high"] {
   color: var(--color-danger);
-  background: color-mix(in srgb, var(--color-danger) 10%, transparent);
+  background: color-mix(in srgb, var(--color-danger) 8%, transparent);
 }
 
 [data-level="medium"] {
   color: var(--color-warning);
-  background: color-mix(in srgb, var(--color-warning) 10%, transparent);
+  background: color-mix(in srgb, var(--color-warning) 8%, transparent);
 }
 
 [data-level="low"] {
   color: var(--color-success);
-  background: color-mix(in srgb, var(--color-success) 10%, transparent);
+  background: color-mix(in srgb, var(--color-success) 8%, transparent);
 }
 
 .risk-mitigation {
-  padding: 10px 16px;
+  padding: 12px 16px;
   color: var(--text-dim);
-  font-size: 12px;
+  font-size: 13px;
 }
 
 /* --- ASSESSMENT slide --- */
@@ -1210,18 +1383,18 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 16px 24px;
+  padding: 18px 28px;
   border-radius: var(--card-radius);
-  background: var(--item-color-subtle, color-mix(in srgb, var(--primary) 12%, transparent));
-  border: 1px solid var(--item-color, var(--primary));
+  background: var(--item-color-subtle, color-mix(in srgb, var(--primary) 8%, transparent));
+  border: 1px solid color-mix(in srgb, var(--item-color, var(--primary)) 30%, transparent);
 }
 
 .verdict-label {
   font-family: var(--font-heading);
-  font-size: 20px;
-  font-weight: var(--heading-weight);
-  text-transform: var(--heading-transform);
-  letter-spacing: var(--heading-tracking);
+  font-size: 22px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
   color: var(--item-color, var(--primary));
 }
 
@@ -1234,28 +1407,29 @@ html, body {
 
 .assessment-pros,
 .assessment-cons {
-  background: var(--surface);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
   border-radius: var(--card-radius);
-  padding: 16px 20px;
-  box-shadow: var(--card-shadow);
+  padding: 20px 24px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .assessment-pros {
-  border-top: 3px solid var(--color-success);
+  border-top: 2px solid var(--color-success);
 }
 
 .assessment-cons {
-  border-top: 3px solid var(--color-danger);
+  border-top: 2px solid var(--color-danger);
 }
 
 .assessment-heading {
   font-family: var(--font-heading);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   text-transform: var(--label-transform);
-  letter-spacing: var(--heading-tracking);
+  letter-spacing: 0.06em;
   color: var(--text-dim);
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .assessment-list {
@@ -1264,15 +1438,15 @@ html, body {
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
 
 .assessment-pro,
 .assessment-con {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--text);
   line-height: 1.5;
-  padding-left: 16px;
+  padding-left: 18px;
   position: relative;
 }
 
@@ -1294,25 +1468,31 @@ html, body {
 
 /* ── 6. Browser Chrome Styles ─────────────────────────────────── */
 
-/* Navigation controls */
+/* Navigation controls — subtle, bottom-right */
 .nav-controls {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  bottom: 16px;
+  right: 16px;
   display: flex;
-  gap: 8px;
+  gap: 6px;
   z-index: 100;
+  opacity: 0.5;
+  transition: opacity 0.2s;
+}
+
+.nav-controls:hover {
+  opacity: 1;
 }
 
 .nav-prev,
 .nav-next {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   border-radius: 6px;
-  border: 1px solid var(--border);
-  background: color-mix(in srgb, var(--surface) 80%, transparent);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: color-mix(in srgb, var(--surface) 60%, transparent);
   color: var(--text-dim);
-  font-size: 16px;
+  font-size: 14px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -1327,14 +1507,14 @@ html, body {
   color: var(--text);
 }
 
-/* Progress bar */
+/* Progress bar — gold, thin, bottom edge */
 .progress-bar {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  height: 3px;
-  background: var(--border);
+  height: 2px;
+  background: rgba(255, 255, 255, 0.04);
   z-index: 100;
 }
 
@@ -1361,7 +1541,7 @@ html, body {
 
 .notes-content {
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.6;
   color: var(--text-dim);
 }
@@ -1428,17 +1608,17 @@ html, body {
 
 .shortcut-help th {
   font-family: var(--font-heading);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   text-transform: var(--label-transform);
-  letter-spacing: var(--heading-tracking);
+  letter-spacing: 0.06em;
   color: var(--text-dim);
   padding: 8px 16px;
   text-align: left;
 }
 
 .shortcut-help td {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--text);
   padding: 8px 16px;
   border-top: 1px solid var(--border);
@@ -1446,7 +1626,7 @@ html, body {
 
 .shortcut-help kbd {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 12px;
   background: var(--surface-raised);
   padding: 2px 8px;
   border-radius: 4px;
@@ -1462,19 +1642,19 @@ html, body {
 
 .error-title {
   font-family: var(--font-heading);
-  font-size: 18px;
-  font-weight: var(--heading-weight);
+  font-size: 20px;
+  font-weight: 700;
   color: var(--color-danger);
-  text-transform: var(--heading-transform);
-  letter-spacing: var(--heading-tracking);
+  text-transform: none;
+  letter-spacing: -0.01em;
 }
 
 .error-data {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-dim);
   background: var(--surface);
-  padding: 12px 16px;
+  padding: 14px 18px;
   border-radius: var(--card-radius);
   white-space: pre-wrap;
   overflow: auto;
