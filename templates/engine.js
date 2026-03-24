@@ -725,7 +725,17 @@ function handleTouchEnd(e) {
   }
 }
 
-// === 7. init() ===
+// === 7. Viewport Scaling ===
+
+function resizeSlides() {
+  const scale = Math.min(window.innerWidth / 960, window.innerHeight / 540);
+  const slides = document.querySelectorAll('.slide');
+  slides.forEach((slide) => {
+    slide.style.transform = `translate(-50%, -50%) scale(${scale})`;
+  });
+}
+
+// === 8. init() ===
 
 function init() {
   const app = document.getElementById('app');
@@ -768,6 +778,10 @@ function init() {
   // Touch listeners
   document.addEventListener('touchstart', handleTouchStart, { passive: true });
   document.addEventListener('touchend', handleTouchEnd, { passive: true });
+
+  // Viewport scaling
+  resizeSlides();
+  window.addEventListener('resize', resizeSlides);
 }
 
 document.addEventListener('DOMContentLoaded', init);

@@ -17,7 +17,7 @@
   --slide-padding-x: 56px;
   --slide-padding-y: 40px;
   --card-radius: 8px;
-  --card-gap: 20px;
+  --card-gap: 24px;
 
   /* Palette */
   --bg: #0B1120;
@@ -61,8 +61,8 @@
   --accent-bar-height: 3px;
   --accent-bar-position: top;
 
-  /* Slide background texture — subtle diagonal gradient */
-  --slide-bg-texture: linear-gradient(135deg, rgba(26, 35, 64, 0.4) 0%, transparent 50%, rgba(36, 48, 96, 0.2) 100%);
+  /* Slide background texture — diagonal gradient */
+  --slide-bg-texture: linear-gradient(135deg, rgba(26, 35, 64, 0.6) 0%, transparent 40%, rgba(36, 48, 96, 0.4) 100%);
 
   /* Code */
   --code-bg: #131B2E;
@@ -81,6 +81,9 @@
 html, body {
   margin: 0;
   padding: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
   background: var(--bg);
   font-family: var(--font-body);
   font-weight: var(--body-weight);
@@ -97,7 +100,10 @@ html, body {
   padding: var(--slide-padding-y) var(--slide-padding-x);
   background: var(--bg);
   background-image: var(--slide-bg-texture);
-  position: relative;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-origin: center center;
   display: none;
   flex-direction: column;
   overflow: hidden;
@@ -114,10 +120,54 @@ html, body {
   margin-bottom: 16px;
 }
 
+/* Title & closing slides: center header content */
+.slide[data-type="title"] .slide-header,
+.slide[data-type="closing"] .slide-header {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 0;
+}
+
+.slide[data-type="title"] .slide-title {
+  font-size: 3.5rem;
+  letter-spacing: 0.15em;
+}
+
+.slide[data-type="title"] .slide-subtitle {
+  font-size: 1.2rem;
+  margin-top: 0.5rem;
+}
+
+.slide[data-type="closing"] .slide-title {
+  font-size: 3rem;
+  letter-spacing: 0.12em;
+}
+
+/* Section slides: center header content */
+.slide[data-type="section"] .slide-header {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 0;
+}
+
+.slide[data-type="section"] .slide-title {
+  font-size: 3rem;
+  letter-spacing: 0.12em;
+}
+
 .slide-body {
   flex: 1;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   min-height: 0;
   overflow: hidden;
 }
@@ -127,9 +177,10 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 12px;
+  padding-top: 8px;
   border-top: 1px solid var(--border);
   margin-top: auto;
+  opacity: 0.5;
 }
 
 /* Header typography */
@@ -295,7 +346,7 @@ html, body {
 }
 
 .text-paragraph {
-  font-size: 15px;
+  font-size: 16px;
   line-height: var(--body-leading);
   color: var(--text);
   margin: 0 0 12px 0;
@@ -311,7 +362,7 @@ html, body {
 }
 
 .text-list-item {
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.5;
   color: var(--text);
   padding-left: 20px;
@@ -425,7 +476,7 @@ html, body {
 
 .number-value {
   font-family: var(--font-heading);
-  font-size: 36px;
+  font-size: 2.5rem;
   font-weight: var(--heading-weight);
   color: var(--item-color, var(--primary));
   line-height: 1.1;
@@ -466,7 +517,7 @@ html, body {
 
 .metric-value {
   font-family: var(--font-heading);
-  font-size: 32px;
+  font-size: 2.5rem;
   font-weight: var(--heading-weight);
   color: var(--item-color, var(--primary));
   line-height: 1.1;
@@ -493,9 +544,10 @@ html, body {
 .chart-container {
   display: flex;
   align-items: flex-end;
+  justify-content: center;
   gap: 12px;
-  flex: 1;
-  padding-bottom: 32px;
+  height: 280px;
+  padding: 20px 0;
 }
 
 .chart-col {
