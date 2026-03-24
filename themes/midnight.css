@@ -586,7 +586,7 @@ html, body {
 
 .number-value {
   font-family: var(--font-heading);
-  font-size: 80px;
+  font-size: clamp(36px, 5vw, 72px);
   font-weight: 700;
   color: var(--primary);
   line-height: 0.95;
@@ -624,11 +624,12 @@ html, body {
   padding: 28px 24px;
   box-shadow: var(--card-shadow);
   border: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
 }
 
 .metric-value {
   font-family: var(--font-heading);
-  font-size: 72px;
+  font-size: clamp(32px, 4.5vw, 56px);
   font-weight: 700;
   color: var(--primary);
   line-height: 0.95;
