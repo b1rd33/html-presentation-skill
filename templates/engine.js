@@ -129,6 +129,125 @@ TEMPLATES['image-text'] = (s) => {
   </div>`;
 };
 
+// --- Data templates ---
+
+TEMPLATES.numbers = (s) => {
+  const items = (s.items || []).map(item =>
+    `<div class="number-item" ${item.color ? `data-color="${esc(item.color)}"` : 'data-color="primary"'}>
+      <div class="number-value">${esc(item.value)}</div>
+      <div class="number-label">${esc(item.label)}</div>
+      ${item.desc ? `<div class="number-desc">${esc(item.desc)}</div>` : ''}
+    </div>`
+  ).join('');
+  return `<div class="numbers-grid" data-count="${(s.items || []).length}">${items}</div>`;
+};
+
+TEMPLATES.metrics = (s) => {
+  const cards = (s.metrics || []).map(m =>
+    `<div class="metric-card" ${m.color ? `data-color="${esc(m.color)}"` : 'data-color="primary"'}>
+      <div class="metric-value">${esc(m.value)}</div>
+      <div class="metric-label">${esc(m.label)}</div>
+      ${m.desc ? `<div class="metric-desc">${esc(m.desc)}</div>` : ''}
+    </div>`
+  ).join('');
+  return `<div class="metrics-grid">${cards}</div>`;
+};
+
+TEMPLATES.chart = (s) => {
+  const values = s.values || [];
+  const labels = s.labels || [];
+  const maxVal = Math.max(...values, 1);
+  const prefix = s.prefix || '';
+  const unit = s.unit || '';
+  const color = s.chartColor || 'primary';
+
+  const bars = values.map((v, i) => {
+    const pct = ((v / maxVal) * 100).toFixed(1);
+    return `<div class="chart-col">
+      <div class="chart-value">${esc(prefix)}${v}${esc(unit)}</div>
+      <div class="chart-bar" data-percent="${pct}" data-color="${esc(color)}" style="--bar-height: ${pct}%"></div>
+      <div class="chart-label">${esc(labels[i] || '')}</div>
+    </div>`;
+  }).join('');
+
+  const annotation = s.annotation
+    ? `<div class="chart-annotation" data-index="${s.annotation.index}">${esc(s.annotation.text)}</div>`
+    : '';
+
+  return `<div class="chart-container">${bars}${annotation}</div>`;
+};
+
+// --- Comparison & structure templates ---
+
+TEMPLATES.comparison = (s) => {
+  const badge = s.badge || 'VS';
+  const renderSide = (side, dir) => {
+    const items = (side.items || []).map(item => `<li class="comparison-item">${esc(item)}</li>`).join('');
+    return `<div class="comparison-side" data-side="${dir}">
+      <h3 class="comparison-title">${esc(side.title || '')}</h3>
+      <ul class="comparison-items">${items}</ul>
+    </div>`;
+  };
+  return `<div class="comparison-grid">
+    ${renderSide(s.left || {}, 'left')}
+    <div class="comparison-badge">${esc(badge)}</div>
+    ${renderSide(s.right || {}, 'right')}
+  </div>`;
+};
+
+TEMPLATES.table = (s) => {
+  const headers = (s.headers || []).map((h, i) =>
+    `<th class="table-header"${s.highlightCol === i ? ' data-highlight="true"' : ''}>${esc(h)}</th>`
+  ).join('');
+  const rows = (s.rows || []).map(row =>
+    `<tr class="table-row">${row.map((cell, i) =>
+      `<td class="table-cell"${s.highlightCol === i ? ' data-highlight="true"' : ''}>${esc(cell)}</td>`
+    ).join('')}</tr>`
+  ).join('');
+  return `<div class="table-container">
+    <table class="data-table">
+      <thead><tr>${headers}</tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+  </div>`;
+};
+
+TEMPLATES.timeline = (s) => {
+  const phases = (s.phases || []).map(p => {
+    const items = (p.items || []).map(item => `<li class="timeline-item">${esc(item)}</li>`).join('');
+    return `<div class="timeline-phase" data-status="${esc(p.status || 'upcoming')}">
+      <div class="timeline-marker">${esc(p.phase || '')}</div>
+      <div class="timeline-content">
+        <h3 class="timeline-title">${esc(p.title || '')}</h3>
+        <ul class="timeline-items">${items}</ul>
+      </div>
+    </div>`;
+  }).join('');
+  return `<div class="timeline-track">${phases}</div>`;
+};
+
+// --- Team template ---
+
+TEMPLATES.team = (s) => {
+  const members = (s.members || []).map(m =>
+    `<div class="team-member">
+      <h3 class="member-name">${esc(m.name)}</h3>
+      <div class="member-role">${esc(m.role || '')}</div>
+      ${m.detail ? `<div class="member-detail">${esc(m.detail)}</div>` : ''}
+    </div>`
+  ).join('');
+  const investors = (s.investors || []).map(inv =>
+    `<div class="team-investor">
+      <span class="investor-name">${esc(inv.name)}</span>
+      ${inv.detail ? `<span class="investor-detail">${esc(inv.detail)}</span>` : ''}
+    </div>`
+  ).join('');
+  return `<div class="team-content">
+    <div class="team-grid">${members}</div>
+    ${investors ? `<div class="team-investors">${investors}</div>` : ''}
+  </div>`;
+};
+
 function renderSlide(slide, index, total) {
   const type = slide.type || 'unknown';
   const templateFn = TEMPLATES[type];
