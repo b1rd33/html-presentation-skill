@@ -61,6 +61,74 @@ function slideShell(bodyHTML, slide, index, total) {
 
 const TEMPLATES = {};
 
+// --- Structural templates ---
+
+TEMPLATES.title = (s) => {
+  const logo = (typeof CONFIG !== 'undefined' && CONFIG.logo)
+    ? `<img class="title-logo" src="${esc(CONFIG.logo)}" alt="logo" />`
+    : '';
+  return `<div class="title-content">
+    ${logo}
+    ${s.tagline ? `<p class="title-tagline">${esc(s.tagline)}</p>` : ''}
+  </div>`;
+};
+
+TEMPLATES.section = (s) => {
+  const pills = (s.pills || []).map(p => `<span class="pill">${esc(p)}</span>`).join('');
+  return `<div class="section-content">
+    ${pills ? `<div class="section-pills">${pills}</div>` : ''}
+  </div>`;
+};
+
+TEMPLATES.closing = (s) => {
+  const logo = (typeof CONFIG !== 'undefined' && CONFIG.logo)
+    ? `<img class="closing-logo" src="${esc(CONFIG.logo)}" alt="logo" />`
+    : '';
+  return `<div class="closing-content">
+    ${logo}
+    ${s.tagline ? `<p class="closing-tagline">${esc(s.tagline)}</p>` : ''}
+    ${s.website ? `<p class="closing-website">${esc(s.website)}</p>` : ''}
+  </div>`;
+};
+
+// --- Narrative templates ---
+
+TEMPLATES.text = (s) => {
+  const lines = (s.body || '').split('\n');
+  let html = '';
+  let inList = false;
+  lines.forEach(line => {
+    const trimmed = line.trim();
+    if (trimmed.startsWith('- ')) {
+      if (!inList) { html += '<ul class="text-list">'; inList = true; }
+      html += `<li class="text-list-item">${esc(trimmed.slice(2))}</li>`;
+    } else {
+      if (inList) { html += '</ul>'; inList = false; }
+      if (trimmed) html += `<p class="text-paragraph">${esc(trimmed)}</p>`;
+    }
+  });
+  if (inList) html += '</ul>';
+  return `<div class="text-content"><div class="text-body">${html}</div></div>`;
+};
+
+TEMPLATES.quote = (s) => {
+  return `<div class="quote-content" ${s.color ? `data-color="${esc(s.color)}"` : ''}>
+    <blockquote class="quote-text">${nl2br(s.quote || '')}</blockquote>
+    ${s.attribution ? `<cite class="quote-attribution">${esc(s.attribution)}</cite>` : ''}
+    ${s.role ? `<span class="quote-role">${esc(s.role)}</span>` : ''}
+  </div>`;
+};
+
+TEMPLATES['image-text'] = (s) => {
+  const pos = s.imagePosition || 'right';
+  return `<div class="image-text-content" data-image-position="${esc(pos)}">
+    <div class="image-text-media">
+      <img src="${esc(s.image || '')}" alt="${esc(s.imageAlt || '')}" class="image-text-img" />
+    </div>
+    <div class="image-text-body">${nl2br(s.body || '')}</div>
+  </div>`;
+};
+
 function renderSlide(slide, index, total) {
   const type = slide.type || 'unknown';
   const templateFn = TEMPLATES[type];
