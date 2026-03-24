@@ -1,0 +1,1025 @@
+/* @contract-version 1.0-dev */
+
+/* ═══════════════════════════════════════════════════════════════
+   MINIMAL — Monochrome whitespace theme
+   Apple keynote meets Dieter Rams meets Swiss design.
+   No decoration. Identity from typography and whitespace alone.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── 1. Google Fonts ──────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* ── 2. CSS Custom Properties ─────────────────────────────────── */
+:root {
+  /* Slide dimensions */
+  --slide-w: 960px;
+  --slide-h: 540px;
+  --slide-padding-x: 64px;
+  --slide-padding-y: 64px;
+  --card-radius: 0px;
+  --card-gap: 24px;
+
+  /* Palette */
+  --bg: #FFFFFF;
+  --surface: #FFFFFF;
+  --surface-raised: #FAFAFA;
+  --text: #111111;
+  --text-dim: #888888;
+  --primary: #111111;
+  --secondary: #555555;
+  --border: #E0E0E0;
+
+  /* Status colors — all monochrome */
+  --color-success: #111111;
+  --color-info: #111111;
+  --color-warning: #111111;
+  --color-danger: #111111;
+
+  /* Typography */
+  --font-heading: 'DM Sans', system-ui, sans-serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  --heading-size: 28px;
+  --heading-weight: 400;
+  --heading-line-height: 1.15;
+  --heading-transform: none;
+  --heading-tracking: 0;
+
+  --body-weight: 400;
+  --body-leading: 1.7;
+  --body-tracking: 0;
+  --label-transform: none;
+
+  /* Cards — transparent, no decoration */
+  --card-border-width: 0px;
+  --card-border-style: none;
+  --card-shadow: none;
+  --card-bg: transparent;
+
+  /* Accent bar — none */
+  --accent-bar-height: 0px;
+  --accent-bar-position: top;
+
+  /* Slide background texture — none */
+  --slide-bg-texture: none;
+
+  /* Code */
+  --code-bg: #F5F5F5;
+  --code-text: #111111;
+}
+
+/* ── 3. data-color mappings ───────────────────────────────────── */
+[data-color="primary"]   { --item-color: #111111; --item-color-subtle: rgba(17, 17, 17, 0.08); }
+[data-color="secondary"] { --item-color: #111111; --item-color-subtle: rgba(17, 17, 17, 0.08); }
+[data-color="success"]   { --item-color: #111111; --item-color-subtle: rgba(17, 17, 17, 0.08); }
+[data-color="info"]      { --item-color: #111111; --item-color-subtle: rgba(17, 17, 17, 0.08); }
+[data-color="warning"]   { --item-color: #111111; --item-color-subtle: rgba(17, 17, 17, 0.08); }
+[data-color="danger"]    { --item-color: #111111; --item-color-subtle: rgba(17, 17, 17, 0.08); }
+
+/* ── 4. Base Layout ───────────────────────────────────────────── */
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  font-family: var(--font-body);
+  font-weight: var(--body-weight);
+  line-height: var(--body-leading);
+  letter-spacing: var(--body-tracking);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.slide {
+  width: var(--slide-w);
+  height: var(--slide-h);
+  padding: var(--slide-padding-y) var(--slide-padding-x);
+  background: var(--bg);
+  background-image: var(--slide-bg-texture);
+  position: relative;
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.slide.active {
+  display: flex;
+}
+
+/* Slide regions */
+.slide-header {
+  flex-shrink: 0;
+  margin-bottom: 20px;
+}
+
+.slide-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.slide-footer {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  margin-top: auto;
+}
+
+/* Header typography */
+.slide-pre-title {
+  font-family: var(--font-heading);
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: var(--heading-transform);
+  letter-spacing: var(--heading-tracking);
+  color: var(--text-dim);
+  margin-bottom: 4px;
+}
+
+.slide-title {
+  font-family: var(--font-heading);
+  font-size: var(--heading-size);
+  font-weight: var(--heading-weight);
+  line-height: var(--heading-line-height);
+  text-transform: var(--heading-transform);
+  letter-spacing: var(--heading-tracking);
+  color: var(--text);
+  margin: 0;
+}
+
+.slide-subtitle {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-dim);
+  margin-top: 6px;
+}
+
+/* Footer elements */
+.slide-number {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+.slide-brand {
+  font-family: var(--font-heading);
+  font-size: 11px;
+  font-weight: 400;
+  text-transform: var(--label-transform);
+  letter-spacing: var(--heading-tracking);
+  color: var(--text-dim);
+}
+
+.slide-logo {
+  height: 20px;
+  opacity: 0.5;
+}
+
+/* ── 5. Template Component Styles ─────────────────────────────── */
+
+/* --- TITLE slide --- */
+.title-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  flex: 1;
+  gap: 16px;
+}
+
+.title-content .slide-title {
+  font-size: 42px;
+  font-weight: 300;
+  line-height: 1.1;
+}
+
+.title-logo {
+  height: 48px;
+  margin-bottom: 12px;
+}
+
+.title-tagline {
+  font-family: var(--font-body);
+  font-size: 16px;
+  color: var(--text-dim);
+  max-width: 600px;
+}
+
+/* --- SECTION slide --- */
+.section-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  flex: 1;
+  gap: 20px;
+}
+
+.section-content .slide-title {
+  font-size: 36px;
+  font-weight: 300;
+  color: var(--text);
+}
+
+.section-pills {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.pill {
+  font-family: var(--font-heading);
+  font-size: 11px;
+  font-weight: 400;
+  text-transform: var(--label-transform);
+  letter-spacing: var(--heading-tracking);
+  padding: 6px 16px;
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+}
+
+/* --- CLOSING slide --- */
+.closing-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  flex: 1;
+  gap: 16px;
+}
+
+.closing-content .slide-title {
+  font-size: 36px;
+  font-weight: 300;
+}
+
+.closing-logo {
+  height: 48px;
+  margin-bottom: 8px;
+}
+
+.closing-tagline {
+  font-size: 16px;
+  color: var(--text-dim);
+}
+
+.closing-website {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--text);
+  margin-top: 4px;
+}
+
+/* --- TEXT slide --- */
+.text-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 16px;
+}
+
+.text-body {
+  flex: 1;
+  overflow: hidden;
+}
+
+.text-paragraph {
+  font-size: 15px;
+  line-height: var(--body-leading);
+  color: var(--text);
+  margin: 0 0 12px 0;
+}
+
+.text-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.text-list-item {
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--text);
+  padding-left: 20px;
+  position: relative;
+}
+
+.text-list-item::before {
+  content: '\2014';
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--text-dim);
+}
+
+/* --- QUOTE slide --- */
+.quote-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  flex: 1;
+  gap: 20px;
+  padding: 0 40px;
+}
+
+.quote-text {
+  font-family: var(--font-heading);
+  font-size: 22px;
+  font-weight: 300;
+  line-height: 1.5;
+  color: var(--text);
+  position: relative;
+}
+
+.quote-text::before {
+  content: '\201C';
+  font-size: 48px;
+  color: var(--text-dim);
+  position: absolute;
+  top: -24px;
+  left: -24px;
+  line-height: 1;
+}
+
+.quote-attribution {
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+  text-transform: var(--label-transform);
+  letter-spacing: var(--heading-tracking);
+}
+
+.quote-role {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-top: 2px;
+}
+
+/* --- IMAGE-TEXT slide --- */
+.image-text-content {
+  display: flex;
+  gap: var(--card-gap);
+  flex: 1;
+  align-items: stretch;
+}
+
+.image-text-media {
+  flex: 1;
+  border-radius: 0;
+  overflow: hidden;
+  background: var(--surface-raised);
+}
+
+.image-text-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.image-text-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+}
+
+/* --- NUMBERS slide --- */
+.numbers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--card-gap);
+  flex: 1;
+  align-content: center;
+}
+
+.number-item {
+  background: var(--card-bg);
+  border-radius: var(--card-radius);
+  padding: 24px 20px;
+  text-align: center;
+  box-shadow: var(--card-shadow);
+  border-top: var(--card-border-width) var(--card-border-style) var(--item-color, var(--primary));
+}
+
+.number-value {
+  font-family: var(--font-heading);
+  font-size: 42px;
+  font-weight: 300;
+  color: var(--text);
+  line-height: 1.1;
+}
+
+.number-label {
+  font-family: var(--font-heading);
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: var(--label-transform);
+  letter-spacing: var(--heading-tracking);
+  color: var(--text-dim);
+  margin-top: 8px;
+}
+
+.number-desc {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+
+/* --- METRICS slide --- */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--card-gap);
+  flex: 1;
+  align-content: center;
+}
+
+.metric-card {
+  background: var(--card-bg);
+  border-radius: var(--card-radius);
+  padding: 24px 20px;
+  box-shadow: var(--card-shadow);
+  border-top: var(--card-border-width) var(--card-border-style) var(--item-color, var(--primary));
+  border-bottom: 1px solid var(--border);
+}
+
+.metric-value {
+  font-family: var(--font-heading);
+  font-size: 36px;
+  font-weight: 300;
+  color: var(--text);
+  line-height: 1.1;
+}
+
+.metric-label {
+  font-family: var(--font-heading);
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: var(--label-transform);
+  letter-spacing: var(--heading-tracking);
+  color: var(--text-dim);
+  margin-top: 8px;
+}
+
+.metric-desc {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+/* --- CHART slide --- */
+.chart-container {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  flex: 1;
+  padding-bottom: 32px;
+}
+
+.chart-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.chart-bar {
+  width: 100%;
+  max-width: 56px;
+  border-radius: 0;
+  background: var(--item-color, var(--text));
+  transition: height 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  min-height: 4px;
+  opacity: 0.85;
+}
+
+.chart-value {
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.chart-label {
+  font-size: 10px;
+  font-weight: 400;
+  text-transform: var(--label-transform);
+  letter-spacing: var(--heading-tracking);
+  color: var(--text-dim);
+  text-align: center;
+}
+
+.chart-annotation {
+  font-size: 11px;
+  color: var(--text-dim);
+  text-align: center;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+  margin-top: auto;
+}
+
+/* --- COMPARISON slide --- */
+.comparison-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--card-gap);
+  flex: 1;
+  align-content: start;
+}
+
+.comparison-side {
+  background: var(--card-bg);
+  border-radius: var(--card-radius);
+  padding: 24px 20px;
+  box-shadow: var(--card-shadow);
+  border-top: var(--card-border-width) var(--card-border-style) var(--item-color, var(--primary));
+  border-left: 1px solid var(--border);
+  padding-left: 24px;
+}
+
+.comparison-title {
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: var(--heading-transform);
+  letter-spacing: var(--heading-tracking);
+  color: var(--text);
+  margin-bottom: 14px;
+}
+
+.comparison-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.comparison-item {
+  font-size: 13px;
+  color: var(--text);
+  padding-left: 16px;
+  position: relative;
+  line-height: 1.5;
+}
+
+.comparison-item::before {
+  content: '\2014';
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--text-dim);
+  font-size: 13px;
+}
+
+.comparison-badge {
+  display: inline-block;
+  font-family: var(--font-heading);
+  font-size: 11px;
+  font-weight: 400;
+  text-transform: var(--label-transform);
+  letter-spacing: var(--heading-tracking);
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-dim);
+  margin-top: 12px;
+}
+
+/* --- TABLE slide --- */
+.table-container {
+  flex: 1;
+  overflow: hidden;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.table-header {
+  display: flex;
+  background: transparent;
+  font-family: var(--font-heading);
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: var(--label-transform);
+  letter-spacing: var(--heading-tracking);
+  color: var(--text-dim);
+  border-bottom: 1px solid var(--text);
+}
+
+.table-row {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+}
+
+.table-row:last-child {
+  border-bottom: none;
+}
+
+.table-cell {
+  flex: 1;
+  padding: 10px 16px;
+  color: var(--text);
+}
+
+.table-header .table-cell {
+  padding: 10px 16px;
+  color: var(--text-dim);
+}
+
+[data-highlight] {
+  background: rgba(17, 17, 17, 0.04);
+}
+
+/* --- TIMELINE slide --- */
+.timeline-track {
+  display: flex;
+  gap: 0;
+  flex: 1;
+  align-items: stretch;
+}
+
+.timeline-phase {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  position: relative;
+  border-left: 1px solid var(--border);
+}
+
+.timeline-phase:first-child {
+  border-left: none;
+}
+
+.timeline-marker {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--text);
+  margin-bottom: 12px;
+  flex-shrink: 0;
+}
+
+.timeline-content {
+  flex: 1;
+}
+
+.timeline-title {
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: var(--heading-transform);
+  letter-spacing: var(--heading-tracking);
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.timeline-items {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+/* --- TEAM slide --- */
+.team-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 20px;
+}
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: var(--card-gap);
+}
+
+.team-member {
+  background: var(--card-bg);
+  border-radius: var(--card-radius);
+  padding: 20px 16px;
+  text-align: center;
+  box-shadow: var(--card-shadow);
+  border-top: var(--card-border-width) var(--card-border-style) var(--item-color, var(--primary));
+  border-bottom: 1px solid var(--border);
+}
+
+.member-name {
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+
+.member-role {
+  font-size: 11px;
+  font-weight: 400;
+  text-transform: var(--label-transform);
+  letter-spacing: var(--heading-tracking);
+  color: var(--text-dim);
+  margin-bottom: 6px;
+}
+
+.member-detail {
+  font-size: 11px;
+  color: var(--text-dim);
+  line-height: 1.4;
+}
+
+.team-investors {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.team-investor {
+  font-family: var(--font-heading);
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-dim);
+  padding: 6px 14px;
+  background: transparent;
+  border-radius: 0;
+  border: 1px solid var(--border);
+}
+
+/* ── 6. Browser Chrome Styles ─────────────────────────────────── */
+
+/* Navigation controls */
+.nav-controls {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 8px;
+  z-index: 100;
+}
+
+.nav-prev,
+.nav-next {
+  width: 36px;
+  height: 36px;
+  border-radius: 0;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--text-dim);
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(8px);
+  transition: background 0.15s, color 0.15s;
+}
+
+.nav-prev:hover,
+.nav-next:hover {
+  background: var(--surface-raised);
+  color: var(--text);
+}
+
+/* Progress bar */
+.progress-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--border);
+  z-index: 100;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--text);
+  transition: width 0.3s ease;
+}
+
+/* Notes panel */
+.notes-panel {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  max-height: 200px;
+  background: var(--surface-raised);
+  border-top: 1px solid var(--border);
+  padding: 16px 24px;
+  overflow-y: auto;
+  z-index: 200;
+  display: none;
+}
+
+.notes-content {
+  font-family: var(--font-body);
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-dim);
+}
+
+/* Overview overlay */
+.overview-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  z-index: 300;
+  display: none;
+  overflow-y: auto;
+  padding: 40px;
+}
+
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.overview-grid .slide {
+  display: flex !important;
+  transform: scale(0.25);
+  transform-origin: top left;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.overview-grid .slide:hover {
+  border-color: var(--text);
+}
+
+/* Overflow audit */
+.overflow-audit .slide {
+  outline: 2px dashed var(--color-danger);
+  outline-offset: -2px;
+}
+
+/* Shortcut help */
+.shortcut-help {
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  z-index: 400;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.shortcut-help table {
+  background: var(--bg);
+  border-radius: 0;
+  box-shadow: none;
+  padding: 24px 32px;
+  border-collapse: collapse;
+  border: 1px solid var(--border);
+}
+
+.shortcut-help th {
+  font-family: var(--font-heading);
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: var(--label-transform);
+  letter-spacing: var(--heading-tracking);
+  color: var(--text-dim);
+  padding: 8px 16px;
+  text-align: left;
+}
+
+.shortcut-help td {
+  font-size: 13px;
+  color: var(--text);
+  padding: 8px 16px;
+  border-top: 1px solid var(--border);
+}
+
+.shortcut-help kbd {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  background: var(--surface-raised);
+  padding: 2px 8px;
+  border-radius: 0;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+/* Error slide */
+.error-slide {
+  background: rgba(17, 17, 17, 0.04);
+  border: 1px solid var(--text);
+}
+
+.error-title {
+  font-family: var(--font-heading);
+  font-size: 18px;
+  font-weight: var(--heading-weight);
+  color: var(--text);
+  text-transform: var(--heading-transform);
+  letter-spacing: var(--heading-tracking);
+}
+
+.error-data {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-dim);
+  background: var(--surface-raised);
+  padding: 12px 16px;
+  border-radius: 0;
+  white-space: pre-wrap;
+  overflow: auto;
+  max-height: 300px;
+}
+
+/* ── 7. Focus & Accessibility ─────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 2px;
+}
+
+.reduced-motion * {
+  transition: none !important;
+  animation: none !important;
+}
+
+/* ── 8. Print ─────────────────────────────────────────────────── */
+@page {
+  size: 10in 5.625in;
+  margin: 0;
+}
+
+@media print {
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .slide {
+    display: block !important;
+    width: var(--slide-w) !important;
+    height: var(--slide-h) !important;
+    page-break-after: always;
+    break-after: page;
+    overflow: hidden !important;
+  }
+
+  .slide:last-child {
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  .nav-controls,
+  .notes-panel,
+  .overview-overlay,
+  .progress-bar,
+  .overflow-audit,
+  .shortcut-help {
+    display: none !important;
+  }
+
+  * {
+    backdrop-filter: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .slide-body {
+    overflow: hidden !important;
+  }
+}
