@@ -1,9 +1,8 @@
 /* @contract-version 1.0-dev */
 
 /* ═══════════════════════════════════════════════════════════════
-   MIDNIGHT — Presentation-grade dark theme
-   Pitch.com meets Keynote. Gold accents on deep navy.
-   Designed for $50M Series A pitch decks.
+   MIDNIGHT v3 — Presentation-grade dark theme
+   Pitch.com / Sequoia-caliber. Gold on deep navy.
    ═══════════════════════════════════════════════════════════════ */
 
 /* ── 1. Google Fonts ──────────────────────────────────────────── */
@@ -16,58 +15,61 @@
   --slide-h: 540px;
   --slide-padding-x: 64px;
   --slide-padding-y: 48px;
-  --card-radius: 12px;
-  --card-gap: 24px;
+  --card-radius: 10px;
+  --card-gap: 20px;
 
-  /* Palette */
+  /* Palette — desaturated, sophisticated */
   --bg: #0B1120;
-  --surface: #1A2340;
-  --surface-raised: #243060;
-  --text: #F1F5F9;
-  --text-dim: #94A3B8;
-  --primary: #D4A843;
-  --secondary: #60A5FA;
-  --border: rgba(255, 255, 255, 0.08);
+  --bg-warm: #0D1424;
+  --surface: #141E36;
+  --surface-raised: #1C2A4A;
+  --text: #E8ECF4;
+  --text-dim: #7A8BAA;
+  --primary: #C9A84C;
+  --primary-muted: rgba(201, 168, 76, 0.65);
+  --secondary: #5B96E3;
+  --border: rgba(255, 255, 255, 0.06);
+  --border-card: rgba(255, 255, 255, 0.08);
 
-  /* Status colors */
-  --color-success: #34D399;
-  --color-info: #60A5FA;
-  --color-warning: #FBBF24;
-  --color-danger: #F87171;
+  /* Status — pulled back saturation (<80%) */
+  --color-success: #2EBF8A;
+  --color-info: #5B96E3;
+  --color-warning: #E8B731;
+  --color-danger: #E06B6B;
 
   /* Typography */
   --font-heading: 'Space Grotesk', system-ui, sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 
-  --heading-size: 52px;
+  --heading-size: 38px;
   --heading-weight: 600;
-  --heading-line-height: 1.05;
+  --heading-line-height: 1.1;
   --heading-transform: none;
   --heading-tracking: -0.02em;
 
   --body-size: 20px;
   --body-weight: 400;
-  --body-leading: 1.5;
-  --body-tracking: 0.01em;
+  --body-leading: 1.55;
+  --body-tracking: 0.005em;
   --label-transform: uppercase;
 
-  /* Cards — layered glass surfaces */
-  --card-border-width: 0;
-  --card-border-style: none;
-  --card-shadow: 0 16px 40px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  --card-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
+  /* Glass card surface */
+  --card-bg: linear-gradient(170deg, rgba(255,255,255,0.035) 0%, rgba(255,255,255,0.008) 100%);
+  --card-border-width: 1px;
+  --card-border-color: rgba(255, 255, 255, 0.07);
+  --card-shadow: 0 8px 32px rgba(0,0,0,0.35), 0 2px 8px rgba(0,0,0,0.2);
 
-  /* Accent bar — disabled by default, per-slide overrides */
+  /* Accent bar — off by default */
   --accent-bar-height: 0;
   --accent-bar-position: top;
 
-  /* Slide background texture */
-  --slide-bg-texture: linear-gradient(135deg, rgba(26, 35, 64, 0.6) 0%, transparent 40%, rgba(36, 48, 96, 0.4) 100%);
+  /* Slide bg texture — diagonal sweep */
+  --slide-bg-texture: linear-gradient(145deg, rgba(20,30,54,0.7) 0%, transparent 35%, rgba(28,42,74,0.5) 100%);
 
   /* Code */
-  --code-bg: #131B2E;
-  --code-text: #E2E8F0;
+  --code-bg: #0F1728;
+  --code-text: #D4DAE6;
 }
 
 /* ── 3. data-color mappings ───────────────────────────────────── */
@@ -112,19 +114,20 @@ html, body {
   box-sizing: border-box;
 }
 
-/* Atmospheric depth layer — radial glow */
+/* Atmospheric depth — radial accent blooms + subtle noise */
 .slide::before {
   content: "";
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse at 18% 20%, rgba(212, 168, 67, 0.08), transparent 40%),
-    radial-gradient(ellipse at 85% 80%, rgba(96, 165, 250, 0.06), transparent 35%);
+    radial-gradient(ellipse 600px 400px at 12% 15%, rgba(201,168,76,0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 500px 500px at 90% 85%, rgba(91,150,227,0.05) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(255,255,255,0.008) 0%, transparent 70%);
   pointer-events: none;
   z-index: 0;
 }
 
-/* All slide content above the atmospheric layer */
+/* Content layers above atmosphere */
 .slide-header,
 .slide-body,
 .slide-footer {
@@ -136,85 +139,10 @@ html, body {
   display: flex;
 }
 
-/* Slide regions */
+/* ── Slide regions ── */
 .slide-header {
   flex-shrink: 0;
-  margin-bottom: 20px;
-}
-
-/* Title & closing slides: center header content */
-.slide[data-type="title"] .slide-header,
-.slide[data-type="closing"] .slide-header {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  margin-bottom: 0;
-}
-
-.slide[data-type="title"] .slide-title {
-  font-size: 72px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  line-height: 0.95;
-}
-
-.slide[data-type="title"] .slide-subtitle {
-  font-size: 18px;
-  margin-top: 12px;
-  opacity: 0.7;
-}
-
-.slide[data-type="title"] .slide-pre-title {
-  display: none;
-}
-
-.slide[data-type="title"] .slide-footer,
-.slide[data-type="closing"] .slide-footer {
-  opacity: 0.25;
-}
-
-.slide[data-type="closing"] .slide-title {
-  font-size: 56px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-}
-
-.slide[data-type="closing"] .slide-pre-title {
-  display: none;
-}
-
-/* Section slides: center header content */
-.slide[data-type="section"] .slide-header {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  margin-bottom: 0;
-}
-
-.slide[data-type="section"] .slide-title {
-  font-size: 64px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  line-height: 1.0;
-  margin-bottom: 20px;
-}
-
-/* Gold accent line between title and pills on section slides */
-.slide[data-type="section"] .slide-title::after {
-  content: "";
-  display: block;
-  width: 40px;
-  height: 2px;
-  background: var(--primary);
-  margin: 16px auto 0;
+  margin-bottom: 24px;
 }
 
 .slide-body {
@@ -226,40 +154,40 @@ html, body {
   overflow: hidden;
 }
 
-/* Footer — very subtle, absolute bottom */
+/* Footer — barely visible */
 .slide-footer {
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 10px;
+  padding-top: 12px;
   margin-top: auto;
-  opacity: 0.4;
-  font-size: 11px;
+  opacity: 0.3;
+  font-size: 10px;
   position: relative;
 }
 
-/* Thin gold accent line above footer */
+/* Thin gold gradient line above footer — 60% width centered */
 .slide-footer::before {
   content: "";
   position: absolute;
   top: 0;
-  left: 0;
-  right: 0;
+  left: 20%;
+  right: 20%;
   height: 1px;
   background: linear-gradient(90deg, transparent, var(--primary), transparent);
-  opacity: 0.3;
+  opacity: 0.25;
 }
 
-/* Header typography */
+/* ── Header typography ── */
 .slide-pre-title {
   font-family: var(--font-heading);
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   color: var(--primary);
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
 .slide-title {
@@ -275,36 +203,76 @@ html, body {
 
 .slide-subtitle {
   font-family: var(--font-body);
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 400;
   color: var(--text-dim);
-  margin-top: 8px;
+  margin-top: 6px;
+  line-height: 1.5;
 }
 
 /* Footer elements */
 .slide-number {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 10px;
   color: var(--text-dim);
 }
 
 .slide-brand {
   font-family: var(--font-heading);
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
   text-transform: var(--label-transform);
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   color: var(--text-dim);
 }
 
 .slide-logo {
-  height: 18px;
-  opacity: 0.5;
+  height: 16px;
+  opacity: 0.4;
 }
 
-/* ── 5. Template Component Styles ─────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════
+   5. STRUCTURAL SLIDE TYPES
+   ═══════════════════════════════════════════════════════════════ */
 
-/* --- TITLE slide --- */
+/* ── TITLE slide ── $50M pitch deck opener ── */
+.slide[data-type="title"] .slide-header {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 0;
+}
+
+.slide[data-type="title"] .slide-title {
+  font-size: 76px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  line-height: 0.9;
+  color: var(--text);
+}
+
+.slide[data-type="title"] .slide-subtitle {
+  font-size: 20px;
+  font-weight: 300;
+  margin-top: 20px;
+  color: var(--text-dim);
+  max-width: 600px;
+  letter-spacing: 0.01em;
+}
+
+.slide[data-type="title"] .slide-pre-title {
+  display: none;
+}
+
+.slide[data-type="title"] .slide-footer,
+.slide[data-type="closing"] .slide-footer {
+  opacity: 0.2;
+}
+
 .title-content {
   display: flex;
   flex-direction: column;
@@ -312,31 +280,62 @@ html, body {
   justify-content: center;
   text-align: center;
   flex: 1;
-  gap: 20px;
-}
-
-.title-content .slide-title {
-  font-size: 72px;
-  font-weight: 700;
-  line-height: 0.95;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  gap: 16px;
 }
 
 .title-logo {
-  height: 48px;
-  margin-bottom: 16px;
+  height: 44px;
+  margin-bottom: 8px;
+  opacity: 0.9;
 }
 
 .title-tagline {
   font-family: var(--font-body);
-  font-size: 18px;
+  font-size: 16px;
+  font-weight: 400;
   color: var(--text-dim);
-  max-width: 600px;
+  max-width: 480px;
   line-height: 1.5;
+  opacity: 0.7;
 }
 
-/* --- SECTION slide --- */
+/* ── SECTION slide ── dramatic centered divider ── */
+.slide[data-type="section"] .slide-header {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 0;
+}
+
+.slide[data-type="section"] .slide-title {
+  font-size: 60px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: 1.0;
+  margin-bottom: 0;
+}
+
+/* Gold accent line after section title */
+.slide[data-type="section"] .slide-title::after {
+  content: "";
+  display: block;
+  width: 40px;
+  height: 2px;
+  background: var(--primary);
+  margin: 20px auto 0;
+}
+
+.slide[data-type="section"] .slide-subtitle {
+  margin-top: 16px;
+  font-size: 17px;
+  color: var(--text-dim);
+  font-weight: 400;
+}
+
 .section-content {
   display: flex;
   flex-direction: column;
@@ -344,28 +343,9 @@ html, body {
   justify-content: center;
   text-align: center;
   flex: 1;
-  gap: 24px;
+  gap: 20px;
   position: relative;
   z-index: 1;
-}
-
-.section-content .slide-title {
-  font-size: 64px;
-  font-weight: 600;
-  color: var(--text);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  line-height: 1.0;
-}
-
-/* Gold accent line after section title */
-.section-content .slide-title::after {
-  content: "";
-  display: block;
-  width: 40px;
-  height: 2px;
-  background: var(--primary);
-  margin: 16px auto 0;
 }
 
 .section-pills {
@@ -373,22 +353,43 @@ html, body {
   gap: 10px;
   flex-wrap: wrap;
   justify-content: center;
+  margin-top: 4px;
 }
 
 .pill {
   font-family: var(--font-heading);
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
   text-transform: var(--label-transform);
-  letter-spacing: 0.06em;
-  padding: 6px 16px;
+  letter-spacing: 0.08em;
+  padding: 5px 14px;
   border-radius: 100px;
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.03);
   color: var(--text-dim);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.07);
 }
 
-/* --- CLOSING slide --- */
+/* ── CLOSING slide ── */
+.slide[data-type="closing"] .slide-header {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 0;
+}
+
+.slide[data-type="closing"] .slide-title {
+  font-size: 52px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.slide[data-type="closing"] .slide-pre-title {
+  display: none;
+}
+
 .closing-content {
   display: flex;
   flex-direction: column;
@@ -396,88 +397,101 @@ html, body {
   justify-content: center;
   text-align: center;
   flex: 1;
-  gap: 20px;
-}
-
-.closing-content .slide-title {
-  font-size: 56px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
+  gap: 16px;
 }
 
 .closing-logo {
-  height: 48px;
-  margin-bottom: 12px;
+  height: 44px;
+  margin-bottom: 8px;
+  opacity: 0.9;
 }
 
 .closing-tagline {
-  font-size: 18px;
+  font-size: 17px;
   color: var(--text-dim);
-  line-height: 1.5;
+  line-height: 1.6;
+  max-width: 560px;
+  font-weight: 300;
 }
 
 .closing-website {
   font-family: var(--font-mono);
-  font-size: 15px;
+  font-size: 14px;
   color: var(--primary);
-  margin-top: 8px;
+  margin-top: 4px;
+  letter-spacing: 0.02em;
 }
 
-/* --- TEXT slide --- */
+/* ═══════════════════════════════════════════════════════════════
+   5b. NARRATIVE SLIDE TYPES
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── TEXT slide ── left-aligned, generous margin ── */
+.slide[data-type="text"] .slide-header {
+  padding-left: 16px;
+}
+
+.slide[data-type="text"] .slide-title {
+  font-size: 36px;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
 .text-content {
   display: flex;
   flex-direction: column;
   flex: 1;
-  gap: 16px;
-  margin-top: 8px;
+  gap: 12px;
+  padding-left: 16px;
 }
 
 .text-body {
   flex: 1;
   overflow: hidden;
+  max-width: 700px;
 }
 
 .text-paragraph {
-  font-size: 20px;
-  line-height: var(--body-leading);
+  font-size: 18px;
+  line-height: 1.6;
   color: var(--text);
-  margin: 0 0 16px 0;
-}
-
-.text-body p {
-  font-size: 20px;
-  line-height: var(--body-leading);
+  margin: 0 0 14px 0;
+  opacity: 0.92;
 }
 
 .text-list {
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin: 4px 0 0 0;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .text-list-item {
-  font-size: 20px;
+  font-size: 17px;
   line-height: 1.5;
   color: var(--text);
-  padding-left: 24px;
+  padding-left: 22px;
   position: relative;
+  opacity: 0.92;
 }
 
+/* Gold square bullets */
 .text-list-item::before {
   content: '';
   position: absolute;
   left: 0;
-  top: 10px;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
+  top: 8px;
+  width: 6px;
+  height: 6px;
+  border-radius: 1px;
   background: var(--primary);
 }
 
-/* --- QUOTE slide --- */
+/* ── QUOTE slide ── */
 .quote-content {
   display: flex;
   flex-direction: column;
@@ -485,8 +499,8 @@ html, body {
   justify-content: center;
   text-align: center;
   flex: 1;
-  gap: 24px;
-  padding: 0 48px;
+  gap: 20px;
+  padding: 0 56px;
   position: relative;
   z-index: 1;
 }
@@ -495,26 +509,27 @@ html, body {
 .quote-content::before {
   content: '\201C';
   font-family: Georgia, 'Times New Roman', serif;
-  font-size: 80px;
+  font-size: 120px;
   color: var(--primary);
-  opacity: 0.3;
+  opacity: 0.12;
   line-height: 1;
   position: absolute;
-  top: 20%;
-  left: 50%;
-  transform: translateX(-50%);
+  top: -8px;
+  left: 56px;
+  pointer-events: none;
 }
 
 .quote-text {
   font-family: var(--font-heading);
-  font-size: 28px;
-  font-weight: 400;
+  font-size: 26px;
+  font-weight: 300;
   font-style: italic;
-  line-height: 1.5;
+  line-height: 1.55;
   color: var(--text);
   position: relative;
-  max-width: 720px;
-  margin-top: 40px;
+  max-width: 680px;
+  margin: 0;
+  padding: 0;
 }
 
 .quote-text::before {
@@ -523,20 +538,22 @@ html, body {
 
 .quote-attribution {
   font-family: var(--font-heading);
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--primary);
   text-transform: var(--label-transform);
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
+  font-style: normal;
 }
 
 .quote-role {
-  font-size: 13px;
+  font-size: 12px;
   color: var(--text-dim);
-  margin-top: 4px;
+  margin-top: 2px;
+  font-style: normal;
 }
 
-/* --- IMAGE-TEXT slide --- */
+/* ── IMAGE-TEXT slide ── */
 .image-text-content {
   display: flex;
   gap: var(--card-gap);
@@ -563,10 +580,16 @@ html, body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 14px;
+  gap: 12px;
+  font-size: 17px;
+  line-height: 1.55;
 }
 
-/* --- NUMBERS slide --- */
+/* ═══════════════════════════════════════════════════════════════
+   5c. DATA SLIDE TYPES
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── NUMBERS slide ── */
 .numbers-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -576,91 +599,100 @@ html, body {
 }
 
 .number-item {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
+  background: var(--card-bg);
   border-radius: var(--card-radius);
-  padding: 28px 24px;
+  padding: 28px 20px;
   text-align: center;
   box-shadow: var(--card-shadow);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-card);
 }
 
 .number-value {
   font-family: var(--font-heading);
-  font-size: clamp(36px, 5vw, 72px);
+  font-size: clamp(36px, 5vw, 56px);
   font-weight: 700;
-  color: var(--primary);
-  line-height: 0.95;
+  color: var(--item-color, var(--primary));
+  line-height: 1.0;
 }
 
 .number-label {
   font-family: var(--font-heading);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   text-transform: var(--label-transform);
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   color: var(--text);
-  margin-top: 12px;
+  margin-top: 14px;
 }
 
 .number-desc {
-  font-size: 13px;
+  font-size: 12px;
   color: var(--text-dim);
   margin-top: 6px;
   line-height: 1.4;
 }
 
-/* --- METRICS slide --- */
+/* ── METRICS slide ── */
 .metrics-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: var(--card-gap);
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
   flex: 1;
   align-content: center;
 }
 
+/* 6 items: 3x2 grid. Fewer items: auto-fit */
+.metrics-grid:has(.metric-card:nth-child(5)) {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.metrics-grid:not(:has(.metric-card:nth-child(5))) {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
 .metric-card {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
+  background: var(--card-bg);
   border-radius: var(--card-radius);
-  padding: 28px 24px;
+  padding: 22px 18px;
   box-shadow: var(--card-shadow);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-card);
   overflow: hidden;
 }
 
 .metric-value {
   font-family: var(--font-heading);
-  font-size: clamp(32px, 4.5vw, 56px);
+  font-size: 42px;
   font-weight: 700;
-  color: var(--primary);
-  line-height: 0.95;
+  color: var(--item-color, var(--primary));
+  line-height: 1.0;
 }
 
 .metric-label {
   font-family: var(--font-heading);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   text-transform: var(--label-transform);
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   color: var(--text);
-  margin-top: 12px;
+  margin-top: 10px;
 }
 
 .metric-desc {
-  font-size: 13px;
+  font-size: 12px;
   color: var(--text-dim);
-  margin-top: 6px;
+  margin-top: 4px;
   line-height: 1.4;
 }
 
-/* --- CHART slide --- */
+/* ── CHART slide ── */
 .chart-container {
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  gap: 14px;
-  min-height: 300px;
-  height: 320px;
-  padding: 20px 0;
+  gap: 10px;
+  min-height: 280px;
+  height: 340px;
+  padding: 16px 0 0;
 }
 
 .chart-col {
@@ -668,44 +700,51 @@ html, body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+  max-width: 80px;
 }
 
 .chart-bar {
   width: 100%;
-  max-width: 60px;
-  border-radius: 6px 6px 0 0;
+  max-width: 52px;
+  border-radius: 5px 5px 0 0;
   background: var(--item-color, var(--primary));
   transition: height 0.6s cubic-bezier(0.22, 1, 0.36, 1);
   min-height: 4px;
+  opacity: 0.9;
 }
 
 .chart-value {
   font-family: var(--font-heading);
-  font-size: 14px;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 600;
   color: var(--text);
 }
 
 .chart-label {
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 500;
   text-transform: none;
   letter-spacing: 0;
   color: var(--text-dim);
   text-align: center;
+  line-height: 1.3;
 }
 
 .chart-annotation {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--text-dim);
   text-align: center;
-  padding-top: 10px;
+  padding-top: 8px;
   border-top: 1px solid var(--border);
   margin-top: auto;
 }
 
-/* --- COMPARISON slide --- */
+/* ═══════════════════════════════════════════════════════════════
+   5d. COMPARISON & STRUCTURE TYPES
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── COMPARISON slide ── */
 .comparison-grid {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
@@ -715,106 +754,104 @@ html, body {
   align-items: stretch;
 }
 
-/* When only 2 sides exist (no VS badge in markup), fall back to 2-col */
-.comparison-grid:not(:has(.comparison-vs)) {
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-}
-
 .comparison-side {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
+  background: var(--card-bg);
   border-radius: var(--card-radius);
-  padding: 28px 24px;
+  padding: 24px 22px;
   box-shadow: var(--card-shadow);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-card);
 }
 
-/* VS badge — dramatic circle */
-.comparison-vs {
+/* Right side (winner) gets subtle gold accent */
+.comparison-side[data-side="right"] {
+  border-top: 2px solid var(--primary);
+}
+
+/* VS badge — circle centered between panels */
+.comparison-badge {
   display: flex;
   align-items: center;
   justify-content: center;
   align-self: center;
-  width: 56px;
-  height: 56px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   background: var(--bg);
   border: 2px solid var(--primary);
   font-family: var(--font-heading);
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 700;
   color: var(--primary);
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   flex-shrink: 0;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
 }
 
 .comparison-title {
   font-family: var(--font-heading);
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
   text-transform: none;
   letter-spacing: -0.01em;
-  color: var(--item-color, var(--primary));
-  margin-bottom: 16px;
+  color: var(--text-dim);
+  margin-bottom: 14px;
+}
+
+/* Right side title in gold */
+.comparison-side[data-side="right"] .comparison-title {
+  color: var(--primary);
 }
 
 .comparison-items {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .comparison-item {
-  font-size: 15px;
+  font-size: 14px;
   color: var(--text);
-  padding-left: 18px;
+  padding-left: 16px;
   position: relative;
   line-height: 1.5;
+  opacity: 0.9;
 }
 
 .comparison-item::before {
   content: '';
   position: absolute;
   left: 0;
-  top: 8px;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--item-color, var(--primary));
+  top: 7px;
+  width: 5px;
+  height: 5px;
+  border-radius: 1px;
+  background: var(--text-dim);
 }
 
-.comparison-badge {
-  display: inline-block;
-  font-family: var(--font-heading);
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: var(--label-transform);
-  letter-spacing: 0.06em;
-  padding: 4px 12px;
-  border-radius: 100px;
-  background: var(--item-color-subtle, color-mix(in srgb, var(--primary) 8%, transparent));
-  color: var(--item-color, var(--primary));
-  margin-top: 14px;
+.comparison-side[data-side="right"] .comparison-item::before {
+  background: var(--primary);
 }
 
-/* --- TABLE slide --- */
+/* ── TABLE slide ── */
 .table-container {
   flex: 1;
   overflow: hidden;
   border-radius: var(--card-radius);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+  background: var(--card-bg);
   box-shadow: var(--card-shadow);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-card);
 }
 
 .data-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 15px;
+  font-size: 14px;
 }
 
 .table-header {
-  display: flex;
   background: var(--surface-raised);
   font-family: var(--font-heading);
   font-size: 11px;
@@ -822,11 +859,12 @@ html, body {
   text-transform: var(--label-transform);
   letter-spacing: 0.06em;
   color: var(--text-dim);
+  padding: 12px 18px;
+  text-align: left;
 }
 
 .table-row {
-  display: flex;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid rgba(255,255,255,0.03);
 }
 
 .table-row:nth-child(even) {
@@ -838,39 +876,36 @@ html, body {
 }
 
 .table-cell {
-  flex: 1;
-  padding: 12px 16px;
+  padding: 11px 18px;
   color: var(--text);
-  font-size: 15px;
+  font-size: 14px;
 }
 
-.table-header .table-cell {
-  padding: 12px 16px;
-  color: var(--text-dim);
+/* Highlighted column — gold left border */
+[data-highlight="true"] {
+  border-left: 2px solid color-mix(in srgb, var(--primary) 40%, transparent);
+  background: color-mix(in srgb, var(--primary) 5%, transparent);
 }
 
-[data-highlight] {
-  background: color-mix(in srgb, var(--primary) 8%, transparent);
-}
-
-/* --- TIMELINE slide --- */
+/* ── TIMELINE slide ── horizontal with markers ── */
 .timeline-track {
   display: flex;
   gap: 0;
   flex: 1;
-  align-items: stretch;
+  align-items: flex-start;
   position: relative;
+  padding-top: 24px;
 }
 
 /* Horizontal connecting line */
 .timeline-track::before {
   content: "";
   position: absolute;
-  top: 5px;
-  left: 20px;
-  right: 20px;
+  top: 29px;
+  left: 24px;
+  right: 24px;
   height: 2px;
-  background: var(--border);
+  background: rgba(255,255,255,0.06);
   z-index: 0;
 }
 
@@ -878,32 +913,48 @@ html, body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: 0 16px 16px;
+  align-items: flex-start;
+  padding: 0 14px 14px;
   position: relative;
-  border-left: none;
   z-index: 1;
 }
 
-.timeline-phase:first-child {
-  border-left: none;
-}
-
-/* Active / highlighted phase */
-.timeline-phase[data-active] {
-  background: rgba(212, 168, 67, 0.06);
-  border-radius: var(--card-radius);
-}
-
+/* Timeline marker — small circle with status */
 .timeline-marker {
+  font-family: var(--font-heading);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--text-dim);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.timeline-marker::before {
+  content: '';
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: var(--item-color, var(--primary));
-  margin-bottom: 14px;
   flex-shrink: 0;
-  box-shadow: 0 0 0 4px var(--bg);
-  position: relative;
-  z-index: 2;
+  box-shadow: 0 0 0 3px var(--bg);
+}
+
+/* Status-based marker styling */
+.timeline-phase[data-status="done"] .timeline-marker::before {
+  background: var(--color-success);
+}
+
+.timeline-phase[data-status="active"] .timeline-marker::before {
+  background: transparent;
+  border: 2px solid var(--primary);
+  box-shadow: 0 0 0 3px var(--bg), 0 0 8px rgba(201,168,76,0.3);
+}
+
+.timeline-phase[data-status="upcoming"] .timeline-marker::before {
+  background: transparent;
+  border: 2px solid rgba(255,255,255,0.15);
 }
 
 .timeline-content {
@@ -916,48 +967,63 @@ html, body {
   font-weight: 600;
   text-transform: none;
   letter-spacing: -0.01em;
-  color: var(--item-color, var(--primary));
+  color: var(--text);
   margin-bottom: 8px;
+}
+
+.timeline-phase[data-status="active"] .timeline-title {
+  color: var(--primary);
+}
+
+.timeline-phase[data-status="upcoming"] .timeline-title {
+  color: var(--text-dim);
 }
 
 .timeline-items {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  font-size: 13px;
+  gap: 3px;
+  font-size: 12px;
   color: var(--text-dim);
   line-height: 1.5;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-/* --- TEAM slide --- */
+.timeline-item {
+  padding-left: 0;
+}
+
+/* ── TEAM slide ── */
 .team-content {
   display: flex;
   flex-direction: column;
   flex: 1;
-  gap: 20px;
+  gap: 18px;
 }
 
 .team-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: var(--card-gap);
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 16px;
 }
 
 .team-member {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
+  background: var(--card-bg);
   border-radius: var(--card-radius);
-  padding: 24px 16px;
+  padding: 22px 16px;
   text-align: center;
   box-shadow: var(--card-shadow);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-card);
 }
 
 .member-name {
   font-family: var(--font-heading);
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
   color: var(--text);
-  margin-bottom: 4px;
+  margin-bottom: 3px;
 }
 
 .member-role {
@@ -965,40 +1031,54 @@ html, body {
   font-weight: 500;
   text-transform: none;
   letter-spacing: 0;
-  color: var(--text-dim);
+  color: var(--primary);
   margin-bottom: 8px;
 }
 
 .member-detail {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--text-dim);
-  line-height: 1.4;
-  opacity: 0.7;
+  line-height: 1.45;
+  opacity: 0.8;
 }
 
 .team-investors {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
 }
 
 .team-investor {
   font-family: var(--font-heading);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   color: var(--text-dim);
-  padding: 6px 14px;
-  background: rgba(255, 255, 255, 0.03);
+  padding: 5px 14px;
+  background: rgba(255, 255, 255, 0.025);
   border-radius: 100px;
   border: 1px solid var(--border);
 }
 
-/* --- NUMBERED-LIST slide --- */
+.investor-name {
+  margin-right: 4px;
+}
+
+.investor-detail {
+  opacity: 0.6;
+  font-weight: 400;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   5e. EXTENDED TEMPLATES
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── NUMBERED-LIST slide ── */
 .numbered-list-content {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
   flex: 1;
 }
 
@@ -1007,42 +1087,42 @@ html, body {
   align-items: baseline;
   gap: 16px;
   padding: 14px 20px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+  background: var(--card-bg);
   border-radius: var(--card-radius);
-  border-left: none;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border-card);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.2);
 }
 
 .list-number {
   font-family: var(--font-heading);
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 700;
   color: var(--primary);
-  min-width: 32px;
+  min-width: 30px;
   text-align: center;
+  opacity: 0.8;
 }
 
 .list-text {
-  font-size: 16px;
+  font-size: 15px;
   color: var(--text);
   line-height: 1.5;
 }
 
-/* --- FEATURE-MATRIX slide --- */
+/* ── FEATURE-MATRIX slide ── */
 .feature-matrix-container {
   flex: 1;
   overflow: hidden;
   border-radius: var(--card-radius);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+  background: var(--card-bg);
   box-shadow: var(--card-shadow);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-card);
 }
 
 .feature-matrix {
   width: 100%;
   border-collapse: collapse;
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .matrix-header {
@@ -1052,7 +1132,7 @@ html, body {
   text-transform: var(--label-transform);
   letter-spacing: 0.06em;
   color: var(--text-dim);
-  padding: 12px 16px;
+  padding: 11px 14px;
   background: var(--surface-raised);
   text-align: center;
 }
@@ -1067,7 +1147,7 @@ html, body {
 }
 
 .matrix-row {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
 }
 
 .matrix-row:last-child {
@@ -1075,40 +1155,45 @@ html, body {
 }
 
 .matrix-feature {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   color: var(--text);
-  padding: 12px 16px;
+  padding: 10px 14px;
   text-align: left;
 }
 
 .matrix-cell {
   text-align: center;
-  padding: 12px 16px;
+  padding: 10px 14px;
 }
 
 .matrix-cell[data-winner] {
-  background: color-mix(in srgb, var(--primary) 6%, transparent);
+  background: color-mix(in srgb, var(--primary) 5%, transparent);
 }
 
 .matrix-check {
   color: var(--color-success);
   font-weight: 700;
-  font-size: 18px;
+  font-size: 16px;
+}
+
+/* Winner column checks in gold */
+.matrix-cell[data-winner] .matrix-check {
+  color: var(--primary);
 }
 
 .matrix-cross {
   color: var(--text-dim);
-  font-size: 18px;
-  opacity: 0.4;
+  font-size: 16px;
+  opacity: 0.3;
 }
 
-/* --- MATRIX-2x2 slide --- */
+/* ── MATRIX-2x2 slide ── */
 .matrix-2x2-container {
   display: grid;
   grid-template-columns: auto 1fr;
   grid-template-rows: 1fr auto;
-  gap: 12px;
+  gap: 10px;
   flex: 1;
   align-items: stretch;
 }
@@ -1117,10 +1202,10 @@ html, body {
   writing-mode: vertical-lr;
   transform: rotate(180deg);
   font-family: var(--font-heading);
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
   text-transform: var(--label-transform);
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   color: var(--text-dim);
   display: flex;
   align-items: center;
@@ -1131,30 +1216,30 @@ html, body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
-  gap: 8px;
+  gap: 6px;
 }
 
 .quadrant {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+  background: var(--card-bg);
   border-radius: var(--card-radius);
-  padding: 18px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 16px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+  border: 1px solid var(--border-card);
 }
 
-.quadrant[data-position="top-left"] { grid-column: 1; grid-row: 1; }
-.quadrant[data-position="top-right"] { grid-column: 2; grid-row: 1; }
-.quadrant[data-position="bottom-left"] { grid-column: 1; grid-row: 2; }
+.quadrant[data-position="top-left"]     { grid-column: 1; grid-row: 1; }
+.quadrant[data-position="top-right"]    { grid-column: 2; grid-row: 1; }
+.quadrant[data-position="bottom-left"]  { grid-column: 1; grid-row: 2; }
 .quadrant[data-position="bottom-right"] { grid-column: 2; grid-row: 2; }
 
 .quadrant-label {
   font-family: var(--font-heading);
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   text-transform: none;
   letter-spacing: -0.01em;
   color: var(--primary);
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .quadrant-items {
@@ -1167,7 +1252,7 @@ html, body {
 }
 
 .quadrant-item {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--text-dim);
   line-height: 1.4;
 }
@@ -1175,15 +1260,15 @@ html, body {
 .matrix-x-axis {
   grid-column: 2;
   font-family: var(--font-heading);
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
   text-transform: var(--label-transform);
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   color: var(--text-dim);
   text-align: center;
 }
 
-/* --- THREE-COLUMNS slide --- */
+/* ── THREE-COLUMNS slide ── */
 .columns-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -1193,21 +1278,21 @@ html, body {
 }
 
 .column-panel {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
+  background: var(--card-bg);
   border-radius: var(--card-radius);
-  padding: 24px 20px;
+  padding: 22px 18px;
   box-shadow: var(--card-shadow);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-card);
 }
 
 .column-header {
   font-family: var(--font-heading);
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   text-transform: none;
   letter-spacing: -0.01em;
   color: var(--item-color, var(--primary));
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 
 .column-items {
@@ -1216,14 +1301,14 @@ html, body {
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 7px;
 }
 
 .column-item {
-  font-size: 14px;
+  font-size: 13px;
   color: var(--text);
   line-height: 1.5;
-  padding-left: 16px;
+  padding-left: 14px;
   position: relative;
 }
 
@@ -1232,13 +1317,13 @@ html, body {
   position: absolute;
   left: 0;
   top: 7px;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
+  width: 4px;
+  height: 4px;
+  border-radius: 1px;
   background: var(--item-color, var(--primary));
 }
 
-/* --- PROCESS slide --- */
+/* ── PROCESS slide ── */
 .process-track {
   display: flex;
   gap: 0;
@@ -1252,66 +1337,66 @@ html, body {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .process-number {
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   background: var(--primary);
   color: var(--bg);
   font-family: var(--font-heading);
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  box-shadow: 0 4px 16px rgba(212, 168, 67, 0.3);
+  box-shadow: 0 4px 12px rgba(201,168,76,0.25);
 }
 
 .process-content {
-  padding: 0 8px;
+  padding: 0 6px;
 }
 
 .process-label {
   font-family: var(--font-heading);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   text-transform: none;
   letter-spacing: -0.01em;
   color: var(--text);
-  margin-bottom: 4px;
+  margin-bottom: 3px;
 }
 
 .process-desc {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--text-dim);
   line-height: 1.4;
 }
 
 .process-arrow {
-  font-size: 20px;
+  font-size: 18px;
   color: var(--primary);
   flex-shrink: 0;
-  opacity: 0.5;
+  opacity: 0.35;
 }
 
-/* --- RISK-TABLE slide --- */
+/* ── RISK-TABLE slide ── */
 .risk-table-container {
   flex: 1;
   overflow: hidden;
   border-radius: var(--card-radius);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+  background: var(--card-bg);
   box-shadow: var(--card-shadow);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-card);
 }
 
 .risk-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .risk-header {
@@ -1321,13 +1406,13 @@ html, body {
   text-transform: var(--label-transform);
   letter-spacing: 0.06em;
   color: var(--text-dim);
-  padding: 12px 16px;
+  padding: 11px 16px;
   background: var(--surface-raised);
   text-align: left;
 }
 
 .risk-row {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid rgba(255,255,255,0.03);
 }
 
 .risk-row:last-child {
@@ -1335,16 +1420,16 @@ html, body {
 }
 
 .risk-name {
-  padding: 12px 16px;
+  padding: 11px 16px;
   color: var(--text);
   font-weight: 500;
 }
 
 .risk-severity,
 .risk-likelihood {
-  padding: 12px 16px;
+  padding: 11px 16px;
   font-family: var(--font-heading);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   text-transform: var(--label-transform);
   letter-spacing: 0.06em;
@@ -1353,30 +1438,30 @@ html, body {
 
 [data-level="high"] {
   color: var(--color-danger);
-  background: color-mix(in srgb, var(--color-danger) 8%, transparent);
+  background: color-mix(in srgb, var(--color-danger) 6%, transparent);
 }
 
 [data-level="medium"] {
   color: var(--color-warning);
-  background: color-mix(in srgb, var(--color-warning) 8%, transparent);
+  background: color-mix(in srgb, var(--color-warning) 6%, transparent);
 }
 
 [data-level="low"] {
   color: var(--color-success);
-  background: color-mix(in srgb, var(--color-success) 8%, transparent);
+  background: color-mix(in srgb, var(--color-success) 6%, transparent);
 }
 
 .risk-mitigation {
-  padding: 12px 16px;
+  padding: 11px 16px;
   color: var(--text-dim);
-  font-size: 13px;
+  font-size: 12px;
 }
 
-/* --- ASSESSMENT slide --- */
+/* ── ASSESSMENT slide ── */
 .assessment-content {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
   flex: 1;
 }
 
@@ -1384,18 +1469,18 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 18px 28px;
+  padding: 16px 24px;
   border-radius: var(--card-radius);
-  background: var(--item-color-subtle, color-mix(in srgb, var(--primary) 8%, transparent));
-  border: 1px solid color-mix(in srgb, var(--item-color, var(--primary)) 30%, transparent);
+  background: var(--item-color-subtle, color-mix(in srgb, var(--primary) 6%, transparent));
+  border: 1px solid color-mix(in srgb, var(--item-color, var(--primary)) 20%, transparent);
 }
 
 .verdict-label {
   font-family: var(--font-heading);
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   color: var(--item-color, var(--primary));
 }
 
@@ -1408,11 +1493,11 @@ html, body {
 
 .assessment-pros,
 .assessment-cons {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+  background: var(--card-bg);
   border-radius: var(--card-radius);
-  padding: 20px 24px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 18px 20px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+  border: 1px solid var(--border-card);
 }
 
 .assessment-pros {
@@ -1425,12 +1510,12 @@ html, body {
 
 .assessment-heading {
   font-family: var(--font-heading);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   text-transform: var(--label-transform);
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   color: var(--text-dim);
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .assessment-list {
@@ -1439,15 +1524,15 @@ html, body {
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
 .assessment-pro,
 .assessment-con {
-  font-size: 14px;
+  font-size: 13px;
   color: var(--text);
   line-height: 1.5;
-  padding-left: 18px;
+  padding-left: 16px;
   position: relative;
 }
 
@@ -1467,33 +1552,35 @@ html, body {
   font-weight: 700;
 }
 
-/* ── 6. Browser Chrome Styles ─────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════
+   6. BROWSER CHROME
+   ═══════════════════════════════════════════════════════════════ */
 
-/* Navigation controls — subtle, bottom-right */
+/* Nav controls — almost invisible, bottom-right */
 .nav-controls {
   position: fixed;
-  bottom: 16px;
-  right: 16px;
+  bottom: 14px;
+  right: 14px;
   display: flex;
-  gap: 6px;
+  gap: 4px;
   z-index: 100;
-  opacity: 0.5;
+  opacity: 0.3;
   transition: opacity 0.2s;
 }
 
 .nav-controls:hover {
-  opacity: 1;
+  opacity: 0.9;
 }
 
 .nav-prev,
 .nav-next {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   border-radius: 6px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  background: color-mix(in srgb, var(--surface) 60%, transparent);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: color-mix(in srgb, var(--surface) 50%, transparent);
   color: var(--text-dim);
-  font-size: 14px;
+  font-size: 12px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -1508,14 +1595,14 @@ html, body {
   color: var(--text);
 }
 
-/* Progress bar — gold, thin, bottom edge */
+/* Progress bar — gold, 2px, very bottom */
 .progress-bar {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   height: 2px;
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.03);
   z-index: 100;
 }
 
@@ -1531,10 +1618,10 @@ html, body {
   bottom: 0;
   left: 0;
   right: 0;
-  max-height: 200px;
+  max-height: 180px;
   background: var(--surface);
   border-top: 1px solid var(--border);
-  padding: 16px 24px;
+  padding: 14px 24px;
   overflow-y: auto;
   z-index: 200;
   display: none;
@@ -1542,7 +1629,7 @@ html, body {
 
 .notes-content {
   font-family: var(--font-body);
-  font-size: 14px;
+  font-size: 13px;
   line-height: 1.6;
   color: var(--text-dim);
 }
@@ -1551,8 +1638,8 @@ html, body {
 .overview-overlay {
   position: fixed;
   inset: 0;
-  background: color-mix(in srgb, var(--bg) 92%, transparent);
-  backdrop-filter: blur(12px);
+  background: color-mix(in srgb, var(--bg) 94%, transparent);
+  backdrop-filter: blur(16px);
   z-index: 300;
   display: none;
   overflow-y: auto;
@@ -1582,17 +1669,35 @@ html, body {
 }
 
 /* Overflow audit */
-.overflow-audit .slide {
-  outline: 3px dashed var(--color-danger);
-  outline-offset: -3px;
+.overflow-audit {
+  position: fixed;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--card-radius);
+  padding: 14px 20px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-dim);
+  z-index: 250;
+  white-space: pre-line;
+  max-width: 600px;
+  box-shadow: var(--card-shadow);
+}
+
+.overflow-detected {
+  outline: 2px dashed var(--color-danger);
+  outline-offset: -2px;
 }
 
 /* Shortcut help */
 .shortcut-help {
   position: fixed;
   inset: 0;
-  background: color-mix(in srgb, var(--bg) 90%, transparent);
-  backdrop-filter: blur(12px);
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  backdrop-filter: blur(16px);
   z-index: 400;
   display: none;
   align-items: center;
@@ -1603,33 +1708,33 @@ html, body {
   background: var(--surface);
   border-radius: var(--card-radius);
   box-shadow: var(--card-shadow);
-  padding: 24px 32px;
+  padding: 20px 28px;
   border-collapse: collapse;
 }
 
 .shortcut-help th {
   font-family: var(--font-heading);
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
   text-transform: var(--label-transform);
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   color: var(--text-dim);
-  padding: 8px 16px;
+  padding: 7px 14px;
   text-align: left;
 }
 
 .shortcut-help td {
-  font-size: 14px;
+  font-size: 13px;
   color: var(--text);
-  padding: 8px 16px;
+  padding: 7px 14px;
   border-top: 1px solid var(--border);
 }
 
 .shortcut-help kbd {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 11px;
   background: var(--surface-raised);
-  padding: 2px 8px;
+  padding: 2px 7px;
   border-radius: 4px;
   border: 1px solid var(--border);
   color: var(--primary);
@@ -1637,32 +1742,35 @@ html, body {
 
 /* Error slide */
 .error-slide {
-  background: color-mix(in srgb, var(--color-danger) 8%, var(--bg));
+  background: color-mix(in srgb, var(--color-danger) 6%, var(--bg));
   border: 2px solid var(--color-danger);
+  border-radius: var(--card-radius);
+  padding: 20px;
 }
 
-.error-title {
+.error-type {
   font-family: var(--font-heading);
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
   color: var(--color-danger);
-  text-transform: none;
-  letter-spacing: -0.01em;
+  margin-bottom: 12px;
 }
 
 .error-data {
   font-family: var(--font-mono);
-  font-size: 13px;
+  font-size: 12px;
   color: var(--text-dim);
   background: var(--surface);
   padding: 14px 18px;
   border-radius: var(--card-radius);
   white-space: pre-wrap;
   overflow: auto;
-  max-height: 300px;
+  max-height: 260px;
 }
 
-/* ── 7. Focus & Accessibility ─────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════
+   7. FOCUS & ACCESSIBILITY
+   ═══════════════════════════════════════════════════════════════ */
 :focus-visible {
   outline: 2px solid var(--primary);
   outline-offset: 2px;
@@ -1673,7 +1781,9 @@ html, body {
   animation: none !important;
 }
 
-/* ── 8. Print ─────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════
+   8. PRINT
+   ═══════════════════════════════════════════════════════════════ */
 @page {
   size: 10in 5.625in;
   margin: 0;
@@ -1685,8 +1795,17 @@ html, body {
     print-color-adjust: exact !important;
   }
 
+  html, body {
+    overflow: visible;
+    height: auto;
+  }
+
   .slide {
-    display: block !important;
+    display: flex !important;
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
     width: var(--slide-w) !important;
     height: var(--slide-h) !important;
     page-break-after: always;
